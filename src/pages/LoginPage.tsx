@@ -36,7 +36,6 @@ const LoginPage: React.FC = () => {
         <div className="logo">🚗 UC-Collection</div>
         <h1 className="title text-center">Sign In</h1>
 
-
         <form className="auth-form" onSubmit={handleSubmit}>
           <label htmlFor="email">Email</label>
           <input
@@ -74,10 +73,7 @@ const LoginPage: React.FC = () => {
             New Here? <Link to="/register">Sign Up</Link>
           </p>
           <p>
-            <Link to="/forgot-password">Forgot Password?</Link>
-          </p>
-          <p>
-            <Link to="/">Go Back to Home</Link>
+            <Link to="/forgot-password">Forgot Password?</Link> | <Link to="/">Go Back to Home</Link>
           </p>
         </div>
       </div>
