@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Header from "../templates/Header";
-import MiniBanner from "../templates/MiniBanner";
 import { useAuthStore } from "../store/useAuthStore";
 
 const LoginPage: React.FC = () => {
