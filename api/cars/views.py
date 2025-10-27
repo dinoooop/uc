@@ -1,11 +1,14 @@
+from core.utils.image_utils import process_cropped_image
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.parsers import MultiPartParser, FormParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from django.db.models import Q
 from .models import Car
 from .serializers import CarSerializer
 from .pagination import CustomPagination
+from io import BytesIO
+from django.core.files.base import ContentFile
 
 
 @api_view(['GET'])
@@ -26,15 +29,25 @@ def car_list(request):
 
 
 @api_view(['POST'])
-@parser_classes([MultiPartParser, FormParser])
+@parser_classes([JSONParser, MultiPartParser, FormParser])
 def car_store(request):
     """
-    Create a new Car entry (supports image upload)
+    Create a new Car entry with shared image cropping utility.
     """
-    serializer = CarSerializer(data=request.data)
+    data = request.data.copy()
+
+    processed_image = process_cropped_image(request, "image")
+    if isinstance(processed_image, Response):
+        return processed_image
+
+    if processed_image:
+        data["image"] = processed_image
+
+    serializer = CarSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 

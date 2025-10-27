@@ -1,35 +1,40 @@
+const getToken = () => localStorage.getItem("access");
+
 const config = {
-    //   authUser: localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser')) : null,
     client: import.meta.env.VITE_CLIENT,
     server: import.meta.env.VITE_SERVER,
-    images: import.meta.env.VITE_CLIENT + '/images',
-    api: import.meta.env.VITE_SERVER + '/api',
-    valuesType: 'dummy', // it can be dummy, default
+    images: `${import.meta.env.VITE_CLIENT}/images`,
+    api: `${import.meta.env.VITE_SERVER}/api`,
+    valuesType: "dummy",
+
     header: () => {
-        const token = localStorage.getItem('token');
+        const token = getToken();
         return {
             headers: {
-                Authorization: `Bearer ${token}`
-            }
-        };
-    },
-    formdataheader: () => {
-        const token = localStorage.getItem('token');
-        return {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data'
-            }
-        };
-    },
-    blobheader: () => {
-        const token = localStorage.getItem('token');
-        return {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                'Content-Type': 'multipart/form-data'
+                "Content-Type": "application/json",
+                ...(token && { Authorization: `JWT ${token}` }),
             },
-            responseType: 'blob'
+        };
+    },
+
+    formdataheader: () => {
+        const token = getToken();
+        return {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                ...(token && { Authorization: `JWT ${token}` }),
+            },
+        };
+    },
+
+    blobheader: () => {
+        const token = getToken();
+        return {
+            headers: {
+                "Content-Type": "multipart/form-data",
+                ...(token && { Authorization: `JWT ${token}` }),
+            },
+            responseType: "blob" as const,
         };
     },
 };

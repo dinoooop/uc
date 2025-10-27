@@ -1,0 +1,21 @@
+.front-form {
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .form-group label{
+        display: inline-block;
+        margin-bottom: 0.2rem;
+    }
+    .form-control {
+        width: 100%;
+        display: block;
+        padding: 1rem;
+        border: 1px solid grey;
+        border-radius: 2px;
+    }
+
+    .textarea {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        height: 10rem;
+    }
+}

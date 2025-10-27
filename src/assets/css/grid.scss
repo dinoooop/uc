@@ -1,0 +1,60 @@
+// Grid System (SASS Version)
+// ---------------------------
+
+// Configuration
+$gutter: 15px;
+$columns: 12;
+
+// Breakpoints map
+$breakpoints: (
+    xs: "(max-width: 575.98px)",
+    sm: "(min-width: 576px)",
+    md: "(min-width: 768px)",
+    lg: "(min-width: 992px)"
+);
+
+// Container
+.container {
+    width: 100%;
+}
+
+// Row
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -$gutter;
+    margin-left: -$gutter;
+}
+
+// Column base styles
+@mixin col-base {
+    position: relative;
+    width: 100%;
+    padding-right: $gutter;
+    padding-left: $gutter;
+}
+
+// Generate columns for default and responsive sizes
+@function span-percentage($i) {
+    @return (100% / $columns) * $i;
+}
+
+@mixin generate-columns($prefix: "") {
+    @for $i from 1 through $columns {
+        .#{$prefix}col-#{$i} {
+            @include col-base;
+            flex: 0 0 span-percentage($i);
+            max-width: span-percentage($i);
+        }
+    }
+}
+
+// Default columns (no media query)
+@include generate-columns();
+
+// Responsive columns
+@each $name, $query in $breakpoints {
+    @media #{$query} {
+        @include generate-columns("col-#{$name}-");
+    }
+}
