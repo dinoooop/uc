@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactCrop from "react-image-crop";
 import type { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
@@ -31,7 +31,6 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
 
   const [crop, setCrop] = useState<Crop>(cropSize);
   const [changedUrl, setChangedUrl] = useState<string>("#");
-  const [prevUrl, setPrevUrl] = useState<string>("#");
   const [showModal, setShowModal] = useState(false);
   const [croppedUrl, setCroppedUrl] = useState<string>("");
 
@@ -43,10 +42,10 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
     formValues[`${name}_w`] = crop.width;
     formValues[`${name}_h`] = crop.height;
     setChangedUrl(formValues[`${name}_url`] ?? "#");
-    setPrevUrl(formValues[name] ? formValues[name] : "#");
   }, [formValues, crop, name]);
 
   const handleOnComplete = async (c: Crop, percentCrop: Crop) => {
+    console.log(c.x);
     formValues[`${name}_x`] = percentCrop.x;
     formValues[`${name}_y`] = percentCrop.y;
     formValues[`${name}_w`] = percentCrop.width;

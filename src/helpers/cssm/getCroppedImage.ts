@@ -19,8 +19,8 @@ export async function getCroppedImage(imageSrc: string, crop: Crop): Promise<str
   });
 
   // Ensure correct scale based on image's natural dimensions
-  const scaleX = image.naturalWidth / image.width;
-  const scaleY = image.naturalHeight / image.height;
+  // const scaleX = image.naturalWidth / image.width;
+  // const scaleY = image.naturalHeight / image.height;
   const pixelRatio = window.devicePixelRatio || 1;
 
   // Handle % units from ReactCrop (convert to px)

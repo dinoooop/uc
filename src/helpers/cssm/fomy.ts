@@ -18,6 +18,7 @@ export class fomy {
                         return { [name]: null, [name + '_url']: null }
                     }
                 }
+                return { [name]: null, [name + '_url']: null }
 
             default:
                 return { [name]: value };

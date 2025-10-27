@@ -39,7 +39,7 @@ const RegisterPage: React.FC = () => {
       try {
         await register(formValues)
         if (!serverError && !loading) {
-          // navigate('/admin/profile')
+          navigate('/admin/profile')
         }
       } catch (error) {
         console.error(error)

@@ -4,6 +4,10 @@ export class vr {
     static validate(name: string, value: unknown, formValues: unknown,  rule: string): string {
         const rules = rule.split("|");
 
+        console.log(name);
+        console.log(formValues);
+        
+
         if (rules.includes("required")) {
             if (value === null || value === undefined || value === "" || (typeof value === "string" && value.trim() === "")) {
                 return "This field is required.";

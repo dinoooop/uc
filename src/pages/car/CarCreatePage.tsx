@@ -11,12 +11,11 @@ import { fomy } from "../../helpers/cssm/fomy";
 import { carCreateRule } from "../../bootstrap/stream/carCreateRule";
 import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
-import { st } from "../../bootstrap/st/st";
 import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 
 const CarCreatePage: React.FC = () => {
-  const { store, loading, serverError, reset } = useCarStore();
+  const { store, loading, serverError } = useCarStore();
   const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -48,7 +47,7 @@ const CarCreatePage: React.FC = () => {
       try {
         await store(formValues)
         if (!serverError && !loading) {
-          // navigate('/admin/profile')
+          navigate('/cars')
         }
       } catch (error) {
         console.error(error)

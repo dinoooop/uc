@@ -37,7 +37,7 @@ const LoginPage: React.FC = () => {
       try {
         await login(formValues)
         if (!serverError && !loading) {
-          // navigate('/admin/profile')
+          navigate('/admin/profile')
         }
       } catch (error) {
         console.error(error)

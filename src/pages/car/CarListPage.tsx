@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "./useCarStore";
