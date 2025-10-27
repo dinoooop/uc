@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ugoj*@@10a06r6!v@qv%62p0t@m043pa+ir2nd-tskbq7s1^^v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '160.187.69.154', 'uc.dipik.in']
+ALLOWED_HOSTS = ['dipik.in', 'www.dipik.in', 'localhost', '127.0.0.1', '160.187.69.154', 'uc.dipik.in']
 
 
 # Application definition
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,7 +58,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = [
+    "https://dipik.in",
+    "https://www.dipik.in",
+    "https://uc.dipik.in",
+]
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 ROOT_URLCONF = 'uc_collection.urls'
 
