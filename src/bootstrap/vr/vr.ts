@@ -16,7 +16,7 @@ export class vr {
 
         if (rules.includes("string")) {
             if (typeof value !== "string") {
-                return "The field must be a string.";
+                return `The field (${name}) must be a string.`;
             }
 
             const min = vra.getMin(rule);

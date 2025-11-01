@@ -50,10 +50,13 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="auth-page">
       <div className="auth-box">
-        <div className="logo">🚗 UC-Collection</div>
-        <h1 className="title text-center">Sign Up</h1>
+        
+        <div className="text-center">
+          <div className="logo">{config.appName}</div>
+          <h1 className="title">Sign Up</h1>
+        </div>
 
-        <form className="auth-form" onSubmit={handleSubmit} noValidate={true}>
+        <form className="front-form" onSubmit={handleSubmit} noValidate={true}>
           <InputField name="full_name" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
           <InputField name="email" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
           <InputField name="password" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
@@ -63,7 +66,7 @@ const RegisterPage: React.FC = () => {
 
           <button
             type="submit"
-            className="auth-button signup"
+            className="btn big"
             disabled={loading}
           >
             {loading ? "Creating account..." : "Sign Up"}
@@ -75,7 +78,7 @@ const RegisterPage: React.FC = () => {
             Already have an account? <Link to="/login">Sign In</Link>
           </p>
           <p>
-            <Link to="/">Go Back to Home</Link>
+            Go back to <Link to="/">Home</Link>
           </p>
         </div>
       </div>

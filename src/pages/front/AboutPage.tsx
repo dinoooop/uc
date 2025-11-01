@@ -1,19 +1,27 @@
 import React from "react";
+import Header from "../../blend/one/Header";
+import MiniBanner from "../../blend/one/MiniBanner";
+import Testimonial from "../../blend/one/Testimonial";
+import Footer from "../../blend/one/Footer";
+import ChooseUs from "../../blend/one/ChooseUs";
+import Story from "../../blend/one/Story";
+import Team from "../../blend/one/Team";
+
 
 const AboutPage: React.FC = () => {
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 text-gray-800">
-      <h1 className="text-3xl font-bold mb-4">About UC-Collection</h1>
-      <p className="text-lg max-w-lg text-center">
-        UC-Collection is a platform for buying and selling high-quality used cars.
-        We aim to connect trusted sellers with genuine buyers through a transparent,
-        easy-to-use interface powered by Django and React.
-      </p>
 
-      <p className="mt-6 text-sm text-gray-500">
-        Version 1.0 — Built with ❤️ using Django REST Framework & React.
-      </p>
-    </div>
+  return (
+    <>
+      <Header />
+      <MiniBanner page="about" />
+
+      <Story />     
+      <ChooseUs />
+
+      <Team />
+
+      <Footer />
+    </>
   );
 };
 

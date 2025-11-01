@@ -22,7 +22,7 @@ const features: FeatureCard[] = [
     },
     {
         icon: 'fa-solid fa-dollar-sign',
-        title: "Affordable Pricing",
+        title: "Pricing",
         subtitle: "Best Deals",
         description: "Competitive pricing and flexible payment options to make your dream car a reality.",
     },
@@ -30,9 +30,10 @@ const features: FeatureCard[] = [
 
 const Feature: React.FC = () => {
     return (
-        <div className="section">
-            <h2 className="main">Ready to Drive</h2>
-            <div className="feature-container">
+        <div className="part bg-grey">
+            <h2 className="part-title">Ready to Drive</h2>
+            <h3 className="part-title-sub mb-4">Start your journey with confidence today</h3>
+            <div className="d-flex-center">
                 {features.map((feature, index) => (
                     <div className="feature-card" key={index}>
                         <div className="feature-icon">

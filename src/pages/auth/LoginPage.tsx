@@ -49,10 +49,12 @@ const LoginPage: React.FC = () => {
     <div className="auth-page">
       <div className="auth-box">
 
-        <div className="logo">🚗 UC-Collection</div>
-        <h1 className="title text-center">Sign In</h1>
+        <div className="text-center">
+          <div className="logo">{config.appName}</div>
+          <h1 className="title">Sign In</h1>
+        </div>
 
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <form className="front-form" onSubmit={handleSubmit}>
           <InputField name="email" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
           <InputField name="password" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
 
@@ -60,7 +62,7 @@ const LoginPage: React.FC = () => {
 
           <button
             type="submit"
-            className="auth-button signin"
+            className="btn big"
             disabled={loading}
           >
             {loading ? "Signing in..." : "Sign In"}
@@ -69,10 +71,7 @@ const LoginPage: React.FC = () => {
 
         <div className="auth-footer text-center">
           <p>
-            New Here? <Link to="/register">Sign Up</Link>
-          </p>
-          <p>
-            <Link to="/forgot-password">Forgot Password?</Link> | <Link to="/">Go Back to Home</Link>
+            New here? <Link to="/register">Sign Up</Link> | Go back to <Link to="/">Home</Link>
           </p>
         </div>
       </div>

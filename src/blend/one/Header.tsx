@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../pages/auth/useAuthStore";
+import config from "../../config";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,9 +25,9 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className={`header ${isScrolled ? "scrolled" : ""}`}>
+    <header className={`header bg-grey ${isScrolled ? "scrolled" : ""}`}>
       <div className="header-container">
-        <div className="logo">🚗 UC-Collection</div>
+        <div className="logo">{config.appName}</div>
         <nav className="nav-links">
           <a href="/">Home</a>
           <a href="/about">About</a>

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ugoj*@@10a06r6!v@qv%62p0t@m043pa+ir2nd-tskbq7s1^^v
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dipik.in', 'www.dipik.in', 'localhost', '127.0.0.1', '160.187.69.154', 'uc.dipik.in']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'uc.dipik.in', 'www.uc.dipik.in']
 
 
 # Application definition
@@ -59,8 +59,13 @@ MIDDLEWARE = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://dipik.in",
-    "https://www.dipik.in",
+    "http://127.0.0.1",
+    "https://uc.dipik.in",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
     "https://uc.dipik.in",
 ]
 

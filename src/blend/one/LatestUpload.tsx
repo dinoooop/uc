@@ -26,21 +26,21 @@ const LatestUpload: React.FC = () => {
   ];
 
   return (
-    <section className="latest-upload section">
-      <div className="container">
-        <h2 className="side-heading">Latest Upload</h2>
-        <h3 className="side-heading-sub">Browse our extensive collection</h3>
-        {
-          cars.map(car => (
-            <div className="rolls">
-              <div className="latest-upload-content">
-                <div className="latest-upload-image">
+    <section className="part bg-white">
+      <div className="wrapper">
+        <h2 className="part-title">Latest Upload</h2>
+        <h3 className="part-title-sub mb-4">Browse our extensive collection</h3>
+        <div className="rolls">
+          {
+            cars.map(car => (
+              <div className="roll">
+                <div className="roll-image">
                   <img src={car.image} alt={car.name} />
                 </div>
-                <div className="latest-upload-details">
-                  <h3 className="car-name">{car.name}</h3>
-                  <p className="car-brand">{car.brand}</p>
-                  <p className="car-description">{car.description}</p>
+                <div className="roll-details">
+                  <h3 className="roll-title">{car.name}</h3>
+                  <p className="roll-title-sub">{car.brand}</p>
+                  <p className="roll-description">{car.description}</p>
                   <ul className="car-meta">
                     <li><strong>Year:</strong> {car.year}</li>
                     <li><strong>Price:</strong> {car.price}</li>
@@ -48,9 +48,9 @@ const LatestUpload: React.FC = () => {
                   </ul>
                 </div>
               </div>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
 
       </div>
     </section>

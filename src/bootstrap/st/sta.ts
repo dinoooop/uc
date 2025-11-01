@@ -1,6 +1,4 @@
-import type { StaType } from "./interfaces";
-
-const sta: StaType = {
+const sta = {
   roles: [
     { label: "Admin", value: 1 },
     { label: "User", value: 2 },
@@ -53,41 +51,7 @@ const sta: StaType = {
     { label: "Instagram", key: "instagram", icon: "fa-instagram" },
     { label: "YouTube", key: "youtube", icon: "fa-youtube" },
     { label: "Linkedin", key: "linkedin", icon: "fa-linkedin" },
-  ],
-  crop: {
-    default: {
-      unit: "px",
-      x: 25,
-      y: 25,
-      width: 50,
-      height: 50,
-    },
-    banner_image: {
-      unit: "px",
-      x: 25,
-      y: 25,
-      width: 300,
-      height: 130,
-    },
-  },
-  resize: {
-    avatar: [
-      { name: "thumb", width: 50, height: 50 },
-      { name: "cover", width: 350, height: 350 },
-    ],
-    service_image: [
-      { name: "thumb", width: 50, height: 50 },
-      { name: "cover", width: 350, height: 350 },
-    ],
-    banner_image: [
-      { name: "thumb", width: 30, height: 15 },
-      { name: "cover", width: 300, height: 150 },
-    ],
-    logo: [
-      { name: "thumb", width: 50, height: 50 },
-      { name: "cover", width: 350, height: 350 },
-    ],
-  },
+  ]
 };
 
 export default sta;

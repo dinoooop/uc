@@ -13,8 +13,9 @@ import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
 import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
+import Footer from "../../blend/one/Footer";
 
-const CarCreatePage: React.FC = () => {
+const FrontCarCreatePage: React.FC = () => {
   const { store, loading, serverError } = useCarStore();
   const navigate = useNavigate();
 
@@ -24,9 +25,11 @@ const CarCreatePage: React.FC = () => {
   const initFormValues = config.valuesType == 'dummy' ? carCreateDummy : carCreateData;
   const [formValues, setFormValues] = useState(initFormValues);
 
+  console.log(formValues);
+
+
 
   const onChangeForm = (name: string, value: unknown) => {
-    console.log("change in image")
     const newFormValues = fomy.setval(name, value)
     setFormValues(prev => ({ ...prev, ...newFormValues }))
 
@@ -39,6 +42,7 @@ const CarCreatePage: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
     const validated = fomy.validateMany(formValues, carCreateRule)
     if (!validated.allErrorsFalse) {
       setErrors(validated.updatedErrors)
@@ -58,43 +62,44 @@ const CarCreatePage: React.FC = () => {
   return (
     <>
       <Header />
-      <MiniBanner page="create_car" />
+      <MiniBanner page="car_create" />
 
-      <div className="section front-form">
-        <h1 className="title text-center">Sell my car</h1>
-        <form onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="col-md-6">
-              <InputField name="name" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+      <div className="part bg-grey">
+        <div className="wrapper">
+          
+          <form className="front-form" onSubmit={handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <InputField name="name" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+              </div>
+              <div className="col-md-6">
+                <InputField name="price" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+              </div>
+              <div className="col-md-12">
+                <TextArea name="description" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+              </div>
+              <div className="col-md-6">
+                <Select name="brand" formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
+              </div>
+              <div className="col-md-6">
+                <InputField name="year" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+              </div>
+              <div className="col-md-6">
+                <InputCropFile name="image" id="car_image" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+              </div>
             </div>
-            <div className="col-md-6">
-              <InputField name="price" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-            </div>
-            <div className="col-md-12">
-              <TextArea name="description" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-            </div>
-            <div className="col-md-6">
-              <Select name="brand" formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
-            </div>
-            <div className="col-md-6">
-              <InputField name="year" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-            </div>
-            <div className="col-md-6">
-              <InputCropFile name="image" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-            </div>
-          </div>
 
 
-          {serverError && <p className="error-text">{serverError}</p>}
-          {formError && <p className="error-text">{formError}</p>}
+            {serverError && <p className="error-text">{serverError}</p>}
+            {formError && <p className="error-text">{formError}</p>}
 
-          <button type="submit" className="auth-button signup" disabled={loading}>
-            {loading ? "Creating..." : "Create Car"}
-          </button>
-        </form>
+            <button type="submit" className="btn" disabled={loading}>Submit</button>
+          </form>
+        </div>
       </div>
+      <Footer />
     </>
   );
 };
 
-export default CarCreatePage;
+export default FrontCarCreatePage;

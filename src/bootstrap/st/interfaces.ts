@@ -23,25 +23,3 @@ export interface ResizeItem {
   height: number;
 }
 
-export interface StaType {
-  roles: OptionItem[];
-  gender: string[];
-  regularStatus: string[];
-  userStatus: string[];
-  week: OptionItem[];
-  month: OptionItem[];
-  brands: OptionItem[];
-  socialMedia: SocialMediaItem[];
-  crop: {
-    default: CropConfig;
-    banner_image: CropConfig;
-    [key: string]: CropConfig;
-  };
-  resize: {
-    avatar: ResizeItem[];
-    service_image: ResizeItem[];
-    banner_image: ResizeItem[];
-    logo: ResizeItem[];
-    [key: string]: ResizeItem[];
-  };
-}

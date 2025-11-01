@@ -1,22 +1,22 @@
 import React from "react";
+import config from "../../config";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="footer">
-      <div className="section">
-        <div className="container footer-content">
-          {/* Left: Logo and Description */}
+    <footer className="part bg-dark">
+
+      <div className="wrapper">
+        <div className="d-flex-start">
           <div className="footer-brand">
-            <div className="logo">🚗 UC-Collection</div>
+            <h3 className="logo">{config.appName}</h3>
             <p className="footer-desc">
-              UC-Collection helps you find, compare, and purchase quality pre-owned cars with confidence.
+              {config.appName} helps you find, compare, and purchase quality pre-owned cars with confidence.
               Reliable, certified, and trusted by thousands of happy customers.
             </p>
           </div>
 
-          {/* Middle: Quick Links */}
           <div className="footer-links">
-            <h4>Quick Links</h4>
+            <h3>Quick Links</h3>
             <ul>
               <li><a href="/">Home</a></li>
               <li><a href="/about">About</a></li>
@@ -26,10 +26,9 @@ const Footer: React.FC = () => {
             </ul>
           </div>
 
-          {/* Right: Contact & Social */}
           <div className="footer-contact">
-            <h4>Contact Us</h4>
-            <p>Email: support@uc-collection.com</p>
+            <h3>Contact Us</h3>
+            <p>Email: support@uc-garage.com</p>
             <p>Phone: +91 98765 43210</p>
             <div className="footer-social">
               <a href="#"><i className="fa-brands fa-facebook"></i></a>
@@ -38,12 +37,13 @@ const Footer: React.FC = () => {
               <a href="#"><i className="fa-brands fa-linkedin"></i></a>
             </div>
           </div>
-        </div>
 
-        {/* Bottom: Copyright */}
-        <div className="footer-bottom text-center">
-          <p>© {new Date().getFullYear()} UC-Collection. All rights reserved.</p>
         </div>
+      </div>
+
+      {/* Bottom: Copyright */}
+      <div className="footer-bottom text-center">
+        <p>© {new Date().getFullYear()} {config.appName}. All rights reserved.</p>
       </div>
     </footer>
   );

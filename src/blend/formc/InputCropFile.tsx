@@ -5,6 +5,8 @@ import "react-image-crop/dist/ReactCrop.css";
 import { fm } from "./fm";
 import sta from "../../bootstrap/st/sta";
 import { getCroppedImage } from "../../helpers/cssm/getCroppedImage";
+import { outer } from "../../helpers/cssm/outer";
+import { imgCrops } from "../../bootstrap/shsm/imgo";
 
 interface InputCropFileProps {
   name: string;
@@ -21,27 +23,46 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
   onChangeForm,
   errors,
   label = null,
-  id = null,
+  id,
 }) => {
   const newId = id ?? name;
   const newLabel = label ?? fm.getLabel(name);
-  const cropSize = sta.crop[name] ?? sta.crop.default;
+  const cropSize = imgCrops[id as keyof typeof imgCrops] ?? imgCrops['default'];
 
   const aspect = cropSize.width / cropSize.height;
 
   const [crop, setCrop] = useState<Crop>(cropSize);
   const [changedUrl, setChangedUrl] = useState<string>("#");
+  const [previousValue, setPreviousValue] = useState<string>("#");
   const [showModal, setShowModal] = useState(false);
   const [croppedUrl, setCroppedUrl] = useState<string>("");
 
   const error = errors[name] ?? "";
 
+
   useEffect(() => {
+    const value = formValues[name];
+    if (!(value instanceof File)) setPreviousValue(value);
+  }, [formValues]);
+
+  useEffect(() => {
+    console.log('crop', crop);
+    console.log('_url', formValues[`${name}_url`]);
+
     formValues[`${name}_x`] = crop.x;
     formValues[`${name}_y`] = crop.y;
     formValues[`${name}_w`] = crop.width;
     formValues[`${name}_h`] = crop.height;
     setChangedUrl(formValues[`${name}_url`] ?? "#");
+
+    const init = async () => {
+      if(formValues[`${name}_url`]){
+        const cropped = await getCroppedImage(formValues[`${name}_url`], crop);
+        setCroppedUrl(cropped);
+      }
+    }
+    init()
+
   }, [formValues, crop, name]);
 
   const handleOnComplete = async (c: Crop, percentCrop: Crop) => {
@@ -58,6 +79,8 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
   };
 
   const onChangeInputField = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('onChangeInputField');
+
     onChangeForm(name, e.target.files);
     setShowModal(true);
   };
@@ -81,9 +104,20 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
             </label>
           </div>
           :
-          <div className="holder">
-            <label htmlFor={newId}>Click here to upload an image</label>
-          </div>
+          <>
+            {
+              previousValue == "#" ?
+                <div className="holder">
+                  <label htmlFor={newId}>Click here to upload an image</label>
+                </div>
+                :
+                <div className="image-preview">
+                  <label htmlFor={newId}>
+                    <img src={outer.showImage(previousValue, 'thumb')} />
+                  </label>
+                </div>
+            }
+          </>
       }
 
       {error && <div className="color-red">{error}</div>}

@@ -1,56 +1,50 @@
-from core.utils.image_utils import process_cropped_image
+from cars.filters import apply_filters
+from core.utils.image_curve import img_resize, img_save_crop
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
-from django.db.models import Q
 from .models import Car
 from .serializers import CarSerializer
 from .pagination import CustomPagination
-from io import BytesIO
-from django.core.files.base import ContentFile
 
 
 @api_view(['GET'])
 def car_list(request):
-    search_query = request.query_params.get('search', '')
-
-    cars = Car.objects.all()
-    if search_query:
-        cars = cars.filter(
-            Q(name__icontains=search_query) |
-            Q(brand__icontains=search_query)
-        )
-
+    cars = Car.objects.all() 
+    cars = apply_filters(cars, request.query_params)
+    cars = cars.order_by('-id')
     paginator = CustomPagination()
     result_page = paginator.paginate_queryset(cars, request)
     serializer = CarSerializer(result_page, many=True)
     return paginator.get_paginated_response(serializer.data)
 
+@api_view(['GET'])
+def car_show(request, pk):
+    try:
+        car = Car.objects.get(pk=pk)
+    except Car.DoesNotExist:
+        return Response({'detail': 'Car not found'}, status=status.HTTP_404_NOT_FOUND)
+
+    serializer = CarSerializer(car)
+    return Response(serializer.data)
+    
 
 @api_view(['POST'])
 @parser_classes([JSONParser, MultiPartParser, FormParser])
 def car_store(request):
-    """
-    Create a new Car entry with shared image cropping utility.
-    """
     data = request.data.copy()
-
-    processed_image = process_cropped_image(request, "image")
-    if isinstance(processed_image, Response):
-        return processed_image
-
-    if processed_image:
-        data["image"] = processed_image
-
+    data["image"] = img_save_crop(request, 'image')
+    if data["image"]:
+        img_resize(data["image"], "car_image")
+        
     serializer = CarSerializer(data=data)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
+    
 @api_view(['PUT', 'PATCH'])
 @parser_classes([MultiPartParser, FormParser])
 def car_update(request, pk):
@@ -62,8 +56,13 @@ def car_update(request, pk):
     except Car.DoesNotExist:
         return Response({'error': 'Car not found'}, status=status.HTTP_404_NOT_FOUND)
 
+    data = request.data.copy()
+    data["image"] = img_save_crop(request, 'image')
+    if data["image"]:
+        img_resize(data["image"], "car_image")
+        
     partial = request.method == 'PATCH'
-    serializer = CarSerializer(car, data=request.data, partial=partial)
+    serializer = CarSerializer(car, data=data, partial=partial)
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data)
