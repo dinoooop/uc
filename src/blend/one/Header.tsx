@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "../../pages/auth/useAuthStore";
+import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import config from "../../config";
 
 const Header: React.FC = () => {

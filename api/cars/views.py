@@ -1,12 +1,13 @@
 from cars.filters import apply_filters
 from core.utils.image_curve import img_resize, img_save_crop
-from rest_framework.decorators import api_view, parser_classes
+from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from .models import Car
 from .serializers import CarSerializer
 from .pagination import CustomPagination
+from rest_framework.permissions import IsAuthenticated
 
 
 @api_view(['GET'])
@@ -32,8 +33,10 @@ def car_show(request, pk):
 
 @api_view(['POST'])
 @parser_classes([JSONParser, MultiPartParser, FormParser])
+@permission_classes([IsAuthenticated])
 def car_store(request):
     data = request.data.copy()
+    data["owner"] = request.user.id 
     data["image"] = img_save_crop(request, 'image')
     if data["image"]:
         img_resize(data["image"], "car_image")
@@ -46,7 +49,7 @@ def car_store(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 @api_view(['PUT', 'PATCH'])
-@parser_classes([MultiPartParser, FormParser])
+@parser_classes([JSONParser, MultiPartParser, FormParser])
 def car_update(request, pk):
     """
     Update an existing Car entry (supports image upload)

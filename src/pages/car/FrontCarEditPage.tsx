@@ -2,24 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
-import useCarStore from "./useCarStore";
+import useCarStore from "../../helpers/stores/useCarStore";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
-import { carCreateRule } from "../../bootstrap/stream/carCreateRule";
 import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
 import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
-import { carEditData } from "../../bootstrap/stream/carEditData";
+import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
+import Submit from "../../blend/one/Submit";
 
 const FrontCarEditPage: React.FC = () => {
   const { update, loading, serverError, show, reset, item } = useCarStore();
+
   const navigate = useNavigate();
-  const params = useParams()
+  const fieldSet = fomy.refineFieldSet(carFieldSet, 'edit')
+  const rules = fomy.getFormRules(fieldSet, 'edit')
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [formError, setFormError] = useState<string>('');
-  const [formValues, setFormValues] = useState(carEditData(item));
+  const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'edit'));
+
+  const params = useParams();
 
   useEffect(() => {
     reset()
@@ -30,32 +34,32 @@ const FrontCarEditPage: React.FC = () => {
   }, [params])
 
   useEffect(() => {
-    setFormValues(carEditData(item))
+    setFormValues(prev => ({ ...prev, ...item }))
   }, [item])
 
+  const onChangeForm = (name: string, value: any) => {
+    const instantNewFormValues = { ...formValues, [name]: value }
+    const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+    setFormValues(instantNewFormValues)
+    setErrors(prev => ({ ...prev, ...newErrors }))
+  }
 
-  const onChangeForm = (name: string, value: unknown) => {
-    const newFormValues = fomy.setval(name, value)
-    setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-    if (carCreateRule[name]) {
-      const instantNewFormValues = { ...formValues, ...newFormValues }
-      const newErrors = fomy.validateOne(name, value, instantNewFormValues, carCreateRule[name])
-      setErrors(prev => ({ ...prev, ...newErrors }))
-    }
+  const updateExtraFields = (newFormValue: Record<string, any>) => {
+    setFormValues(prev => ({ ...prev, ...newFormValue }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const validated = fomy.validateMany(formValues, carCreateRule)
+    const validated = fomy.validateMany(formValues, rules)
     if (!validated.allErrorsFalse) {
       setErrors(validated.updatedErrors)
       setFormError(validated.firstError)
     } else {
+      const submitData = fomy.prepareSubmit(formValues)
       try {
-        await update(formValues)
+        await update(submitData)
         if (!serverError && !loading) {
-          navigate('/cars')
+          // navigate('/account/cars')
         }
       } catch (error) {
         console.error(error)
@@ -73,32 +77,29 @@ const FrontCarEditPage: React.FC = () => {
           <form className="front-form" onSubmit={handleSubmit}>
             <div className="row">
               <div className="col-md-6">
-                <InputField name="name" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                <InputField name="title" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
               </div>
               <div className="col-md-6">
-                <InputField name="price" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                <InputField name="price" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
               </div>
               <div className="col-md-12">
-                <TextArea name="description" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                <TextArea name="description" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
               </div>
               <div className="col-md-6">
-                <Select name="brand" formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
+                <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
               </div>
               <div className="col-md-6">
-                <InputField name="year" type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                <InputField name="year" fieldSet={fieldSet} type="number" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
               </div>
               <div className="col-md-6">
-                <InputCropFile name="image" id="car_image" formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                <InputCropFile name="image" imgCropKey="car_image" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
               </div>
             </div>
-
 
             {serverError && <p className="error-text">{serverError}</p>}
             {formError && <p className="error-text">{formError}</p>}
 
-            <button type="submit" className="btn" disabled={loading}>
-              {loading ? "..." : "Submit"}
-            </button>
+            <Submit cto="/admin/cars" />
           </form>
         </div>
       </div>

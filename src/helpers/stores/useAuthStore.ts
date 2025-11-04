@@ -6,23 +6,25 @@ interface User {
     id: number;
     full_name: string;
     email: string;
+    is_staff: boolean;
 }
 
 interface AuthState {
+    loading: boolean;
+    serverError: string;
+    ssm: string;
+    statusCode: number;
+    resetBeforeRequest: () => void;
+    setErrorResponse: (error: any) => void;
+
     user: User | null;
     accessToken: string | null;
     refreshToken: string | null;
-    loading: boolean;
-    serverError: string;
-    success: string;
     theme: string | null;
-
-    login: (data: { email: string; password: string }) => Promise<void>;
+    login: (data: Record<string, any>) => Promise<void>;
     register: (data: any) => Promise<void>;
     logout: () => void;
     refreshAccessToken: () => Promise<string | null>;
-    checkAuth: () => Promise<void>;
-    reset: () => void;
 }
 
 const userFromStorage = localStorage.getItem('authUser')
@@ -42,18 +44,33 @@ const themeFromStorage = localStorage.getItem('theme')
     : 'light';
 
 export const useAuthStore = create<AuthState>((set, get) => ({
+    loading: false,
+    serverError: '',
+    ssm: '',
+    statusCode: 0,
+    resetBeforeRequest: () => set({
+        loading: true,
+        serverError: '',
+        ssm: '',
+    }),
+    setErrorResponse: (error: any) => {
+        set({
+            loading: false,
+            serverError: error.response?.data?.message ?? 'Server error',
+            ssm: '',
+            statusCode: error.response?.status ?? 500,
+        });
+    },
+
     user: userFromStorage,
     accessToken: accessFromStorage,
     refreshToken: refreshFromStorage,
-    loading: false,
-    serverError: '',
-    success: '',
     theme: themeFromStorage,
 
-    // 🔹 LOGIN
     login: async (data) => {
-        set({ loading: true, serverError: '', success: '' });
+
         try {
+            get().resetBeforeRequest()
             const res = await axios.post(`${config.api}/accounts/login/`, data);
             const { user, tokens } = res.data;
 
@@ -67,19 +84,24 @@ export const useAuthStore = create<AuthState>((set, get) => ({
                 accessToken: tokens.access,
                 refreshToken: tokens.refresh,
             });
-        } catch (error: any) {
-            set({
-                loading: false,
-                serverError: error.response?.data?.message ?? 'Server Error',
-            });
-            throw error;
+
+            if (user.is_staff) {
+                window.location.href = '/admin/cars/create';
+            } else {
+                window.location.href = '/account/cars/create';
+            }
+            
+        } catch (err) {
+            get().setErrorResponse(err)
+            throw err;
         }
     },
 
     // 🔹 REGISTER
     register: async (data) => {
-        set({ loading: true, serverError: '', success: '' });
+
         try {
+            get().resetBeforeRequest()
             const res = await axios.post(`${config.api}/accounts/register/`, data);
             const { user, tokens } = res.data;
 
@@ -93,12 +115,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
                 accessToken: tokens.access,
                 refreshToken: tokens.refresh,
             });
-        } catch (error: any) {
-            set({
-                loading: false,
-                serverError: error.response?.data?.message ?? 'Server Error',
-            });
-            throw error;
+        } catch (err) {
+            get().setErrorResponse(err)
+            throw err;
         }
     },
 
@@ -128,31 +147,4 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         }
     },
 
-    // 🔹 CHECK AUTH
-    checkAuth: async () => {
-        set({ loading: true });
-        const token = localStorage.getItem('access');
-        if (!token) {
-            get().logout();
-            return;
-        }
-
-        try {
-            await axios.get(`${config.api}/auth/check/`, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-            set({ loading: false });
-        } catch (error: any) {
-            if (error.response?.status === 401) {
-                const newAccess = await get().refreshAccessToken();
-                if (!newAccess) get().logout();
-            } else {
-                get().logout();
-            }
-            set({ loading: false });
-        }
-    },
-
-    // 🔹 RESET STATE
-    reset: () => set({ loading: false, serverError: '', success: '' }),
 }));

@@ -1,44 +1,38 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "./useAuthStore";
+import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import { fomy } from "../../helpers/cssm/fomy";
-import { loginDummy } from "../../bootstrap/stream/loginDummy";
-import { loginData } from "../../bootstrap/stream/loginData";
-import { loginRule } from "../../bootstrap/stream/loginRule";
 import InputField from "../../blend/formc/InputField";
 import config from "../../config";
+import { authFieldSet } from "../../bootstrap/stream/authFieldSet";
+import Submit from "../../blend/one/Submit";
 
 
 const LoginPage: React.FC = () => {
-  const { login, loading, serverError } = useAuthStore();
+  const { login, user, loading, serverError } = useAuthStore();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const fieldSet = fomy.refineFieldSet(authFieldSet, 'login')
+  const rules = fomy.getFormRules(fieldSet, 'login')
 
-  const initFormValues = config.valuesType == 'dummy' ? loginDummy : loginData;
-  const [formValues, setFormValues] = useState(initFormValues);
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'login'));
 
   const onChangeForm = (name: string, value: any) => {
-    const newFormValues = fomy.setval(name, value)
-    setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-    if (loginRule[name]) {
-      const instantNewFormValues = { ...formValues, ...newFormValues }
-      const newErrors = fomy.validateOne(name, value, instantNewFormValues, loginRule[name])
-      setErrors(prev => ({ ...prev, ...newErrors }))
-    }
+    const instantNewFormValues = { ...formValues, [name]: value }
+    const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+    setFormValues(instantNewFormValues)
+    setErrors(prev => ({ ...prev, ...newErrors }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const validated = fomy.validateMany(formValues, loginRule)
+    const validated = fomy.validateMany(formValues, rules)
     if (!validated.allErrorsFalse) {
       setErrors(validated.updatedErrors)
     } else {
+      const submitData = fomy.prepareSubmit(formValues)
       try {
-        await login(formValues)
-        if (!serverError && !loading) {
-          navigate('/admin/profile')
-        }
+        await login(submitData)
       } catch (error) {
         console.error(error)
       }
@@ -55,18 +49,12 @@ const LoginPage: React.FC = () => {
         </div>
 
         <form className="front-form" onSubmit={handleSubmit}>
-          <InputField name="email" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-          <InputField name="password" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
+          <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+          <InputField name="password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
 
-          {serverError && <p className="error-text">{serverError}</p>}
+          {serverError && <p className="color-red">{serverError}</p>}
 
-          <button
-            type="submit"
-            className="btn big"
-            disabled={loading}
-          >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
+          <Submit label="Sign In" cssClass="btn big mt-1" loading={loading}/>
         </form>
 
         <div className="auth-footer text-center">

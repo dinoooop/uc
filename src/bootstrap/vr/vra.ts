@@ -17,6 +17,13 @@ export class vra {
 
     }
 
+    static getMaxSize(rule: string): number {
+        const found = rule.split("|").find(r => r.startsWith("maxsize:"));
+        if (!found) return 0;
+        const size = parseFloat(found.split(":")[1]);
+        return isNaN(size) ? 0 : size;
+    }
+
     static getInList(rule: string): string[] {
         const found = rule.split("|").find(r => r.startsWith("in["));
         if (!found) return [];

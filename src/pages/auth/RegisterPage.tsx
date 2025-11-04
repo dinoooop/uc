@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuthStore } from "./useAuthStore";
+import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import { registerRule } from "../../bootstrap/stream/registerRule";
 import { fomy } from "../../helpers/cssm/fomy";
 import InputField from "../../blend/formc/InputField";

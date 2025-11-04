@@ -2,32 +2,38 @@ import React, { useEffect, useState } from "react";
 import ReactCrop from "react-image-crop";
 import type { Crop } from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
-import { fm } from "./fm";
-import sta from "../../bootstrap/st/sta";
 import { getCroppedImage } from "../../helpers/cssm/getCroppedImage";
 import { outer } from "../../helpers/cssm/outer";
 import { imgCrops } from "../../bootstrap/shsm/imgo";
 
 interface InputCropFileProps {
   name: string;
+  fieldSet: Record<string, any>;
   formValues: Record<string, any>;
   onChangeForm: (name: string, value: any) => void;
+  updateExtraFields: (value: any) => void;
   errors: Record<string, string>;
-  label?: string | null;
-  id?: string | null;
+  imgCropKey?: string | null;
 }
 
 const InputCropFile: React.FC<InputCropFileProps> = ({
   name,
+  fieldSet,
   formValues,
   onChangeForm,
+  updateExtraFields,
   errors,
-  label = null,
-  id,
+  imgCropKey,
 }) => {
-  const newId = id ?? name;
-  const newLabel = label ?? fm.getLabel(name);
-  const cropSize = imgCrops[id as keyof typeof imgCrops] ?? imgCrops['default'];
+
+  if (!fieldSet[name]) {
+    throw new Error(`${name} not found`);
+  }
+
+  const newId = fieldSet[name].id;
+  const newLabel = fieldSet[name].label;
+
+  const cropSize = imgCrops[imgCropKey as keyof typeof imgCrops] ?? imgCrops['default'];
 
   const aspect = cropSize.width / cropSize.height;
 
@@ -36,41 +42,27 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
   const [previousValue, setPreviousValue] = useState<string>("#");
   const [showModal, setShowModal] = useState(false);
   const [croppedUrl, setCroppedUrl] = useState<string>("");
-
   const error = errors[name] ?? "";
-
 
   useEffect(() => {
     const value = formValues[name];
     if (!(value instanceof File)) setPreviousValue(value);
   }, [formValues]);
 
-  useEffect(() => {
-    console.log('crop', crop);
-    console.log('_url', formValues[`${name}_url`]);
-
-    formValues[`${name}_x`] = crop.x;
-    formValues[`${name}_y`] = crop.y;
-    formValues[`${name}_w`] = crop.width;
-    formValues[`${name}_h`] = crop.height;
-    setChangedUrl(formValues[`${name}_url`] ?? "#");
-
-    const init = async () => {
-      if(formValues[`${name}_url`]){
-        const cropped = await getCroppedImage(formValues[`${name}_url`], crop);
-        setCroppedUrl(cropped);
-      }
-    }
-    init()
-
-  }, [formValues, crop, name]);
 
   const handleOnComplete = async (c: Crop, percentCrop: Crop) => {
-    console.log(c.x);
-    formValues[`${name}_x`] = percentCrop.x;
-    formValues[`${name}_y`] = percentCrop.y;
-    formValues[`${name}_w`] = percentCrop.width;
-    formValues[`${name}_h`] = percentCrop.height;
+
+    // onChangeForm(`${name}_x`, percentCrop.x)
+    // onChangeForm(`${name}_y`, percentCrop.y)
+    // onChangeForm(`${name}_w`, percentCrop.width)
+    // onChangeForm(`${name}_h`, percentCrop.height)
+    const theCrop = {
+      x: percentCrop.x,
+      y: percentCrop.y,
+      w: percentCrop.width,
+      h: percentCrop.height,
+    }
+    updateExtraFields({ [`${name}_crop`]: JSON.stringify(theCrop) })
 
     if (changedUrl !== "#" && percentCrop.width && percentCrop.height) {
       const cropped = await getCroppedImage(changedUrl, percentCrop);
@@ -79,10 +71,32 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
   };
 
   const onChangeInputField = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('onChangeInputField');
 
-    onChangeForm(name, e.target.files);
     setShowModal(true);
+
+    const newValue = e.target.files
+
+    if (newValue instanceof FileList) {
+
+      const file = newValue[0]
+
+      if (file && file.type.startsWith('image/')) {
+        const fileUrl = URL.createObjectURL(file)
+        setChangedUrl(fileUrl)
+        onChangeForm(name, file)
+      } else {
+        console.warn(`Unsupported file type for ${name}:`, file?.type)
+        setChangedUrl("#")
+        onChangeForm(name, null)
+      }
+
+    } else {
+      setChangedUrl("#")
+      onChangeForm(name, null)
+    }
+
+
+
   };
 
   return (

@@ -1,6 +1,6 @@
 export interface Car {
     id: number;
-    name: string; // done
+    title: string; // done
     description: string; // done
     brand: string; // done
     year: number; // done

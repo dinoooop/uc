@@ -34,6 +34,11 @@ const slides: Slide[] = [
     },
     {
         image: "/images/car_list_banner.jpg",
+        key: "my_cars",
+        title: "My Cars",
+    },
+    {
+        image: "/images/car_list_banner.jpg",
         key: "car_create",
         title: "Sell my car",
         subTitle: "Your car’s best offer starts here"

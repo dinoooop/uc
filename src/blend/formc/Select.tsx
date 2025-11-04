@@ -1,18 +1,16 @@
 import React from "react";
-import { fm } from "./fm";
 
 export interface OptionItem {
-    label: string;
-    value: number | string;
+  label: string;
+  value: number | string;
 }
 
 interface SelectFieldProps {
   name: string;
+  fieldSet: Record<string, any>;
   formValues: Record<string, any>;
-  onChangeForm: (name: string, value: string | number) => void;
+  onChangeForm: (name: string, value: any) => void;
   errors: Record<string, string>;
-  id?: string;
-  label?: string;
   options?: OptionItem[];
   showEmpty?: boolean;
   className?: string;
@@ -21,17 +19,22 @@ interface SelectFieldProps {
 
 const Select: React.FC<SelectFieldProps> = ({
   name,
+  fieldSet,
   formValues,
   onChangeForm,
   errors,
-  id,
-  label,
   options = [],
   showEmpty = true,
   className = "form-control",
 }) => {
-  const newId = id ?? name;
-  const newLabel = label ?? fm.getLabel(name);
+
+  if (!fieldSet[name]) {
+    throw new Error(`${name} not found`);
+  }
+
+  const newId = fieldSet[name].id;
+  const newLabel = fieldSet[name].label;
+
   const value = formValues[name] ?? "";
   const error = errors[name] ?? "";
 

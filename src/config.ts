@@ -13,7 +13,7 @@ const config = {
         return {
             headers: {
                 "Content-Type": "application/json",
-                ...(token && { Authorization: `JWT ${token}` }),
+                ...(token && { Authorization: `Bearer ${token}` }),
             },
         };
     },
@@ -23,7 +23,7 @@ const config = {
         return {
             headers: {
                 "Content-Type": "multipart/form-data",
-                ...(token && { Authorization: `JWT ${token}` }),
+                ...(token && { Authorization: `Bearer ${token}` }),
             },
         };
     },
@@ -33,7 +33,7 @@ const config = {
         return {
             headers: {
                 "Content-Type": "multipart/form-data",
-                ...(token && { Authorization: `JWT ${token}` }),
+                ...(token && { Authorization: `Bearer ${token}` }),
             },
             responseType: "blob" as const,
         };

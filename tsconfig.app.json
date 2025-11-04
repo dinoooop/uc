@@ -24,5 +24,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"]
+  "include": ["src", "trash/carEditData.ts", "trash/carCreateRule.ts", "trash/carCreateDummy.ts", "trash/carCreateData.ts", "trash/carListData.ts", "trash/carListRule.ts"]
 }

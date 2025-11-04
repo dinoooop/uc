@@ -3,29 +3,29 @@ import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
-import { carListData } from "../../../trash/carListData";
-import { carListRule } from "../../../trash/carListRule";
 import Footer from "../../blend/one/Footer";
 import { useGeneralStore } from "../front/useGeneralStore";
+import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
+import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
 
-const FrontCarListPage: React.FC = () => {
-    const { items, index, reset, destroy, remove } = useCarStore();
+const AccountCarListPage: React.FC = () => {
+    const { items, perPage, total, index, remove, destroy, update, serverError } = useCarStore();
     const { regular, svData } = useGeneralStore()
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
-    const [formValues, setFormValues] = useState<Record<string, any>>(carListData);
+    const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
+    const rules = fomy.getFormRules(fieldSet, 'index')
     const [errors, setErrors] = useState<Record<string, string>>({})
-
+    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
 
     useEffect(() => {
         regular()
     }, [])
 
     useEffect(() => {
-        reset();
         const data = Object.fromEntries(
             Object.entries(formValues)
                 .filter(([key, value]) => value !== "")
@@ -49,42 +49,22 @@ const FrontCarListPage: React.FC = () => {
     }
 
     const onChangeForm = (name: string, value: any) => {
-        const newFormValues = fomy.setval(name, value)
-        setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-        if (carListRule[name]) {
-            const instantNewFormValues = { ...formValues, ...newFormValues }
-            const newErrors = fomy.validateOne(name, value, instantNewFormValues, carListRule[name])
-            setErrors(prev => ({ ...prev, ...newErrors }))
-        }
+        const instantNewFormValues = { ...formValues, [name]: value }
+        const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+        setFormValues(instantNewFormValues)
+        setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
     return (
         <>
             <Header />
-            <MiniBanner page="car_list" />
+            <MiniBanner page="my_cars" />
             <div className="part bg-grey">
                 <div className="wrapper-fluid">
                     <div className="row">
                         <div className="col-md-3">
-                            <aside className="sidebar">
-                                <h3>Filters</h3>
+                            <AccountQuickLinks />
 
-                                {/* Brand Filter */}
-                                <div className="filter-group">
-                                    <h4>Brands</h4>
-                                    <label><input type="checkbox" /> Toyota</label>
-                                    <label><input type="checkbox" /> Honda</label>
-                                    <label><input type="checkbox" /> BMW</label>
-                                    <label><input type="checkbox" /> Tesla</label>
-                                </div>
-
-                                {/* Range Filters */}
-                                <RangeFilter name="year" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Year" min={svData.min_year} max={svData.max_year} />
-                                <RangeFilter name="price" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Price ($)" min={svData.min_price} max={svData.max_price} step={10000} />
-                                <RangeFilter name="travelled" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Travelled (km)" min={0} max={200000} step={1000} />
-                                <RangeFilter name="mileage" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Mileage (km/l)" min={5} max={40} step={1} />
-                            </aside>
                         </div>
                         <div className="col-md-9">
                             <main className="main-section">
@@ -98,12 +78,12 @@ const FrontCarListPage: React.FC = () => {
                                                 <div className="card-image">
                                                     <img
                                                         src={`${outer.showImage(car.image, 'thumb')}`}
-                                                        alt={car.name}
+                                                        alt={car.title}
                                                         loading="lazy"
                                                     />
                                                 </div>
                                                 <div className="card-body">
-                                                    <h2 className="card-title">{car.name}</h2>
+                                                    <h2 className="card-title">{car.title}</h2>
                                                     <div className="card-actions">
                                                         <button className="btn" onClick={() => onClickEdit(car.id)}>
                                                             <i className="fas fa-edit"></i>
@@ -142,4 +122,4 @@ const FrontCarListPage: React.FC = () => {
     );
 };
 
-export default FrontCarListPage;
+export default AccountCarListPage;

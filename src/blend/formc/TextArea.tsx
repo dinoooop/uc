@@ -3,15 +3,17 @@ import { fm } from "./fm";
 
 interface TextAreaFieldProps {
   name: string;
+  fieldSet: Record<string, any>;
   formValues: Record<string, any>;
   errors: Record<string, string>;
-  onChangeForm: (name: string, value: unknown) => void;
+  onChangeForm: (name: string, value: any) => void;
   id?: string;
   label?: string;
 }
 
 const TextArea: React.FC<TextAreaFieldProps> = ({
   name,
+  fieldSet,
   formValues,
   errors,
   onChangeForm,
@@ -19,8 +21,12 @@ const TextArea: React.FC<TextAreaFieldProps> = ({
   label = '',
 }) => {
 
-  const newId = id || name;
-  const newLabel = label || fm.getLabel(name);
+  if (!fieldSet[name]) {
+    throw new Error(`${name} not found`);
+  }
+
+  const newId = fieldSet[name].id;
+  const newLabel = fieldSet[name].label;
   const value = formValues[name] ?? "";
   const error = errors[name] ?? "";
 

@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 import os
 import random
 from PIL import Image
@@ -30,14 +31,25 @@ def img_save_crop(request, image_field_name: str = "image"):
     """
     image_file = request.FILES.get(image_field_name)
     if not image_file:
-        return None
+        # not file, may existing url string
+        image_value = getattr(request, "data", None)
+        if image_value and image_field_name in image_value:
+            return image_value[image_field_name] or None
 
     try:
         data = request.data
-        x = float(data.get(f"{image_field_name}_x", 0))
-        y = float(data.get(f"{image_field_name}_y", 0))
-        w = float(data.get(f"{image_field_name}_w", 100))
-        h = float(data.get(f"{image_field_name}_h", 100))
+        crop_data_raw = data.get(f"{image_field_name}_crop", "{}")
+
+        try:
+            crop_data = json.loads(crop_data_raw) if isinstance(crop_data_raw, str) else crop_data_raw
+        except json.JSONDecodeError:
+            crop_data = {}
+
+        # Extract individual values with defaults
+        x = float(crop_data.get("x", 0))
+        y = float(crop_data.get("y", 0))
+        w = float(crop_data.get("w", 100))
+        h = float(crop_data.get("h", 100))
 
         
         with Image.open(image_file) as img:
@@ -69,10 +81,7 @@ def img_save_crop(request, image_field_name: str = "image"):
         return None
 
     except Exception as e:
-        return Response(
-            {"error": f"Image processing failed: {str(e)}"},
-            status=status.HTTP_400_BAD_REQUEST,
-        )
+        return None
         
 def img_resize(filename, type):
     filepath = os.path.join(settings.MEDIA_ROOT, "uploads", filename)
