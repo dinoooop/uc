@@ -17,6 +17,7 @@ import Footer from "../../blend/one/Footer";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 import Submit from "../../blend/one/Submit";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
+import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";
 
 const AccountCarCreatePage: React.FC = () => {
   const { store, loading, serverError } = useCarStore();
@@ -60,7 +61,7 @@ const AccountCarCreatePage: React.FC = () => {
   };
 
   return (
-    <>
+    <AccountProtectedLayout>
       <Header />
       <MiniBanner page="car_create" />
 
@@ -110,7 +111,7 @@ const AccountCarCreatePage: React.FC = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </AccountProtectedLayout>
   );
 };
 

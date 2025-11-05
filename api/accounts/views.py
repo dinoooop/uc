@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated
+
 
 # Helper function to generate JWT tokens
 def get_tokens_for_user(user):
@@ -73,6 +76,26 @@ def login(request):
             'id': user.id,
             'full_name': user.first_name,
             'email': user.email,
+            'is_staff': user.is_staff,
         },
         'tokens': tokens
     }, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def check(request):
+    try:
+        user = request.user
+        user_id = user.id
+        return Response({
+            'user': {
+                'username': user.username,
+                'email': user.email,
+                'id': user_id,
+            },
+            'userId': user_id
+        }, status=status.HTTP_200_OK)
+    except Exception as err:
+        print(err)
+        return Response({'message': 'Internal server error'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

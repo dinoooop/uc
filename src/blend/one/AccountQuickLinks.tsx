@@ -27,8 +27,8 @@ const AccountQuickLinks: React.FC = () => {
             <h3>Quick Links</h3>
             <ul className="side-nav-link">
                 {
-                    quickLinks.map(link => (
-                        <li>
+                    quickLinks.map((link, index) => (
+                        <li key={index}>
                             <Link className="side-nav-links" to={link.href}>
                                 <i className={link.iconClass}></i>
                                 <span className="menu-title">{link.title}</span>

@@ -20,11 +20,12 @@ interface AuthState {
     user: User | null;
     accessToken: string | null;
     refreshToken: string | null;
-    theme: string | null;
+    theme: string | undefined;
     login: (data: Record<string, any>) => Promise<void>;
     register: (data: any) => Promise<void>;
     logout: () => void;
     refreshAccessToken: () => Promise<string | null>;
+    check: () => Promise<void>;
 }
 
 const userFromStorage = localStorage.getItem('authUser')
@@ -86,11 +87,11 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             });
 
             if (user.is_staff) {
-                window.location.href = '/admin/cars/create';
+                // window.location.href = '/admin/cars/create';
             } else {
-                window.location.href = '/account/cars/create';
+                // window.location.href = '/account/cars/create';
             }
-            
+
         } catch (err) {
             get().setErrorResponse(err)
             throw err;
@@ -144,6 +145,17 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         } catch (error) {
             get().logout();
             return null;
+        }
+    },
+    check: async () => {
+        try {
+            get().resetBeforeRequest()
+            const response = await axios.get(`${config.api}/accounts/check/`, config.header());
+            const user = response.data.user
+        } catch (error) {
+            localStorage.removeItem('authUser')
+            localStorage.removeItem('access')
+            window.location.href = '/login'
         }
     },
 
