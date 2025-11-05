@@ -7,18 +7,26 @@ import NotFoundPage from "../../pages/front/NotFoundPage";
 
 interface AccountProtectedLayoutProps {
     children: ReactNode;
-    statusCode: number
+    statusCode?: number
 }
 
 const AccountProtectedLayout: React.FC<AccountProtectedLayoutProps> = ({ children, statusCode = 200 }) => {
 
-    const { user, check } = useAuthStore()
+    const { user, checkAuth } = useAuthStore()
     const { svData, regular } = useGeneralStore();
 
     const navigate = useNavigate()
 
+    const carl = localStorage.getItem('carl')
+
+    if(carl){
+
+        console.log('carl', carl);
+    }
+    
+
     useEffect(() => {
-        check()
+        checkAuth()
 
         if (!svData) { regular() }
 

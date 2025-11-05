@@ -20,29 +20,18 @@ interface AuthState {
     user: User | null;
     accessToken: string | null;
     refreshToken: string | null;
-    theme: string | undefined;
+    theme: string;
     login: (data: Record<string, any>) => Promise<void>;
     register: (data: any) => Promise<void>;
     logout: () => void;
     refreshAccessToken: () => Promise<string | null>;
-    check: () => Promise<void>;
+    checkAuth: () => Promise<void>;
 }
 
-const userFromStorage = localStorage.getItem('authUser')
-    ? JSON.parse(localStorage.getItem('authUser') as string)
-    : null;
-
+const userFromStorage = localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser') as string) : null;
 const accessFromStorage = localStorage.getItem('access')
-    ? localStorage.getItem('access')
-    : null;
-
 const refreshFromStorage = localStorage.getItem('refresh')
-    ? localStorage.getItem('refresh')
-    : null;
-
-const themeFromStorage = localStorage.getItem('theme')
-    ? localStorage.getItem('theme')
-    : 'light';
+const themeFromStorage = localStorage.getItem('theme') ?? 'light';
 
 export const useAuthStore = create<AuthState>((set, get) => ({
     loading: false,
@@ -87,9 +76,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             });
 
             if (user.is_staff) {
-                // window.location.href = '/admin/cars/create';
+                window.location.href = '/admin/cars/create';
             } else {
-                // window.location.href = '/account/cars/create';
+                window.location.href = '/account/cars/create';
             }
 
         } catch (err) {
@@ -97,8 +86,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             throw err;
         }
     },
-
-    // 🔹 REGISTER
     register: async (data) => {
 
         try {
@@ -121,8 +108,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             throw err;
         }
     },
-
-    // 🔹 LOGOUT
     logout: () => {
         localStorage.removeItem('authUser');
         localStorage.removeItem('access');
@@ -130,8 +115,6 @@ export const useAuthStore = create<AuthState>((set, get) => ({
         set({ user: null, accessToken: null, refreshToken: null });
         window.location.href = '/login';
     },
-
-    // 🔹 REFRESH ACCESS TOKEN
     refreshAccessToken: async () => {
         const refresh = localStorage.getItem('refresh');
         if (!refresh) return null;
@@ -147,16 +130,27 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             return null;
         }
     },
-    check: async () => {
-        try {
-            get().resetBeforeRequest()
-            const response = await axios.get(`${config.api}/accounts/check/`, config.header());
-            const user = response.data.user
-        } catch (error) {
-            localStorage.removeItem('authUser')
-            localStorage.removeItem('access')
-            window.location.href = '/login'
+    checkAuth: async () => {
+
+        const token = localStorage.getItem('access');
+        if (!token) {
+            get().logout();
+            return;
         }
-    },
+
+        try {
+            await axios.get(`${config.api}/accounts/check/`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+        } catch (error: any) {
+            if (error.response?.status === 401) {
+                const newAccess = await get().refreshAccessToken();
+                if (!newAccess) get().logout();
+            } else {
+                get().logout();
+            }
+        }
+    }
 
 }));

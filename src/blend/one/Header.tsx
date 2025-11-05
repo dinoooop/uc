@@ -12,7 +12,7 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50); // Shrink after scrolling 50px
+      setIsScrolled(window.scrollY > 200); // Shrink after scrolling 50px
     };
 
     window.addEventListener("scroll", handleScroll);

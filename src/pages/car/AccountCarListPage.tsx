@@ -39,7 +39,7 @@ const AccountCarListPage: React.FC = () => {
     };
 
     const onClickEdit = (id: Number) => {
-        navigate(`/cars/edit/${id}`);
+        navigate(`/account/cars/edit/${id}`);
     };
 
 

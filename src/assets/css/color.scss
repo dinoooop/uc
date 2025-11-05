@@ -1,27 +1,13 @@
 .bg-white {
-    background-color: aliceblue;
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6,
-    p {
-        color: $color-4;
-    }
-
-    a {
-        color: $vibrant;
-    }
+    background-color: $white;
 }
 
+.bg-white {
+    background-color: $grey;
+}
 
-
-
-
-.bg-grey {
-    background-color: $bg-grey;
+.bg-grey,
+.bg-white {
 
     h1,
     h2,
@@ -35,6 +21,19 @@
 
     a {
         color: $vibrant;
+    }
+
+    a.btn {
+        color: $white;
+    }
+
+    .btn {
+        background-color: $color-4;
+        color: $white;
+    }
+
+    .btn:hover {
+        background-color: $color-3;
     }
 }
 
@@ -53,5 +52,14 @@
 
     a {
         color: $vibrant;
+    }
+
+    .btn {
+        background-color: $color-1;
+        color: $color-4;
+    }
+
+    .btn:hover {
+        background-color: $color-2;
     }
 }

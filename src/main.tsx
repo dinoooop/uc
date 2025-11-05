@@ -7,7 +7,6 @@ import AboutPage from "./pages/front/AboutPage";
 import LoginPage from "./pages/auth/LoginPage";
 import RegisterPage from "./pages/auth/RegisterPage";
 import FrontCarListPage from "./pages/car/FrontCarListPage";
-import FrontCarEditPage from "./pages/car/FrontCarEditPage";
 import ContactPage from "./pages/front/ContactPage";
 import CarCreatePage from "./pages/car/CarCreatePage";
 import CarListPage from "./pages/car/CarListPage";
@@ -17,6 +16,7 @@ import UserCreatePage from "./pages/user/UserCreatePage";
 import UserEditPage from "./pages/user/UserEditPage";
 import AccountCarListPage from "./pages/car/AccountCarListPage";
 import AccountCarCreatePage from "./pages/car/AccountCarCreatePage";
+import AccountCarEditPage from "./pages/car/AccountCarEditPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         {/* ACCOUNT */}
         <Route path="/account/cars" element={<AccountCarListPage />} />
         <Route path="/account/cars/create" element={<AccountCarCreatePage />} />
-        <Route path="/account/cars/edit/:id" element={<FrontCarEditPage />} />
+        <Route path="/account/cars/edit/:id" element={<AccountCarEditPage />} />
 
         {/* ADMIN */}
         <Route path="/admin/cars" element={<CarListPage />} />

@@ -7,6 +7,7 @@
   transition: all 0.3s ease;
   z-index: 1000;
   height: 80px;
+  background-color: $grey;
   /* default height */
 }
 
@@ -158,7 +159,7 @@
   width: 300px;
   text-align: center;
   border: 1px solid $color-4;
-  
+
 }
 
 
@@ -526,9 +527,9 @@
 
 /* Footer */
 footer h3 {
-    font-weight: bold;
-    font-size: 1.4rem;
-    margin-bottom: 1rem;
+  font-weight: bold;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 .footer .logo {
@@ -886,23 +887,23 @@ footer h3 {
 
 .side-nav-link {
 
-  
-
-  ul {
-  }
-  
   li {
     list-style: none;
     padding: 1rem 1rem;
 
     border-bottom: 1px solid $color-3;
+
     i {
       margin-right: 1rem;
     }
 
-    a{
+    a {
       color: $color-4;
       font-size: 1rem;
     }
   }
+}
+
+.submit {
+  margin-right: 1rem;
 }

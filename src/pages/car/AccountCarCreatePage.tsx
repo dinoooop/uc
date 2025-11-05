@@ -1,14 +1,10 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import config from "../../config";
+import { useNavigate } from "react-router-dom";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "../../helpers/stores/useCarStore";
-import { carCreateData } from "../../../trash/carCreateData";
-import { carCreateDummy } from "../../../trash/carCreateDummy";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
-import { carCreateRule } from "../../../trash/carCreateRule";
 import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
 import sta from "../../bootstrap/st/sta";
@@ -52,7 +48,7 @@ const AccountCarCreatePage: React.FC = () => {
       try {
         await store(submitData)
         if (!serverError && !loading) {
-          navigate('/admin/cars')
+          navigate('/account/cars')
         }
       } catch (error) {
         console.error(error)
@@ -83,9 +79,8 @@ const AccountCarCreatePage: React.FC = () => {
                   <div className="col-md-12">
                     <TextArea name="description" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                   </div>
-
-
                 </div>
+
                 <div className="row">
                   <div className="col-md-6">
                     <InputCropFile name="image" imgCropKey="car_image" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
@@ -96,18 +91,19 @@ const AccountCarCreatePage: React.FC = () => {
                     <InputField name="travelled" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                     <InputField name="mileage" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                   </div>
-
                 </div>
 
-                {serverError && <p className="error-text">{serverError}</p>}
-                {formError && <p className="error-text">{formError}</p>}
+                <div className="row">
+                  <div className="col-md-12">
+                    {serverError && <p className="error-text">{serverError}</p>}
+                    {formError && <p className="error-text">{formError}</p>}
+                    <Submit cto="/account/cars" loading={loading} />
+                  </div>
+                </div>
 
-                <Submit cto="/admin/cars" loading={loading} />
               </form>
             </div>
           </div>
-
-
         </div>
       </div>
       <Footer />

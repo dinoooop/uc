@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import axios, { AxiosError } from 'axios';
 import config from '../../config';
 import type { Car } from '../../bootstrap/stream/carItem';
+import { header } from '../cssm/header';
 
 interface CarsState {
     loading: boolean;
@@ -53,7 +54,7 @@ const useCarStore = create<CarsState>((set, get) => ({
             get().resetBeforeRequest()
             const response = await axios.get(`${config.api}/cars/`, {
                 params,
-                headers: config.header().headers,
+                headers: header.json().headers,
             });
             set({
                 items: response.data.results || [],
@@ -69,7 +70,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     show: async (id: number): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            const response = await axios.get(`${config.api}/cars/show/${id}`, config.header());
+            const response = await axios.get(`${config.api}/cars/show/${id}`, header.json());
             set({ loading: false, item: response.data });
         } catch (err) {
             get().setErrorResponse(err)
@@ -79,7 +80,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     store: async (data: FormData | Record<string, any>): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            const theHeader = (data instanceof FormData) ? config.formdataheader() : config.header();
+            const theHeader = (data instanceof FormData) ? header.formdata() : header.json();
             await axios.post(`${config.api}/cars/store/`, data, theHeader);
             set({ loading: false });
         } catch (err) {
@@ -90,7 +91,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     update: async (data: FormData | Record<string, any>): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            const theHeader = (data instanceof FormData) ? config.formdataheader() : config.header();
+            const theHeader = (data instanceof FormData) ? header.formdata() : header.json();
             const theId = (data instanceof FormData) ? data.get("id") : data.id;
             await axios.put(`${config.api}/cars/update/${theId}/`, data, theHeader);
             set({ loading: false });
@@ -102,7 +103,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     destroy: async (id: number): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            await axios.delete(`${config.api}/cars/delete/${id}/`, config.header())
+            await axios.delete(`${config.api}/cars/delete/${id}/`, header.json())
             set({ loading: false });
         } catch (err) {
             get().setErrorResponse(err)
