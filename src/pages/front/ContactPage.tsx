@@ -2,42 +2,45 @@ import React, { useState } from "react";
 import Header from "../../blend/one/Header";
 import Footer from "../../blend/one/Footer";
 import MiniBanner from "../../blend/one/MiniBanner";
-import { useGeneralStore } from "./useGeneralStore";
-import { contactData } from "../../bootstrap/stream/contactData";
 import { fomy } from "../../helpers/cssm/fomy";
 import InputField from "../../blend/formc/InputField";
 import TextArea from "../../blend/formc/TextArea";
-import { contactRule } from "../../bootstrap/stream/contactRule";
+import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import { generalFieldSet } from "../../bootstrap/stream/generalFieldSet";
+import Submit from "../../blend/one/Submit";
 
 const ContactPage: React.FC = () => {
-    const { send, sem, ssm, loading } = useGeneralStore();
+    const { send, serverError, ssm, loading } = useGeneralStore();
+    const fieldSet = fomy.refineFieldSet(generalFieldSet, 'contact')
+    const rules = fomy.getFormRules(fieldSet, 'contact')
+
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const [formValues, setFormValues] = useState(contactData);
+    const [formError, setFormError] = useState<string>('');
+    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'contact'));
 
     const onChangeForm = (name: string, value: any) => {
-        const newFormValues = fomy.setval(name, value)
-        setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-        if (contactRule[name]) {
-            const instantNewFormValues = { ...formValues, ...newFormValues }
-            const newErrors = fomy.validateOne(name, value, instantNewFormValues, contactRule[name])
-            setErrors(prev => ({ ...prev, ...newErrors }))
-        }
+        const instantNewFormValues = { ...formValues, [name]: value }
+        const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+        setFormValues(instantNewFormValues)
+        setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        const validated = fomy.validateMany(formValues, contactRule)
+        const validated = fomy.validateMany(formValues, rules)
         if (!validated.allErrorsFalse) {
             setErrors(validated.updatedErrors)
+            setFormError(validated.firstError)
         } else {
+            const submitData = fomy.prepareSubmit(formValues)
             try {
-                await send(formValues)
+                await send(submitData)
             } catch (error) {
                 console.error(error)
             }
         }
-    };
+    }
+
     return (
         <>
             <Header />
@@ -66,16 +69,16 @@ const ContactPage: React.FC = () => {
                         </p>
 
                         <form className="front-form" onSubmit={handleSubmit}>
-                            <InputField name="name" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-                            <InputField name="email" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-                            <TextArea name="message" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
+                            
+                            <InputField name="first_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            
+                            <TextArea name="message" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
 
-                            {sem && <p className="error-text">{sem}</p>}
+                            {serverError && <p className="error-text">{serverError}</p>}
                             {ssm && <p className="success-text">{ssm}</p>}
 
-                            <button type="submit" className="btn big" disabled={loading}>
-                                {loading ? "Sending..." : "Submit"}
-                            </button>
+                            <Submit loading={loading} />
                         </form>
                     </div>
                 </div>

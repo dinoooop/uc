@@ -31,4 +31,15 @@ export class vra {
         if (!match || !match[1]) return [];
         return match[1].split(",").map(v => v.trim());
     }
+
+    static getSame(rule: string): string | null {
+        const parts = rule.split("|");
+        for (const part of parts) {
+            if (part.startsWith("same:")) {
+                return part.replace("same:", "").trim();
+            }
+        }
+        return null;
+    }
+
 }

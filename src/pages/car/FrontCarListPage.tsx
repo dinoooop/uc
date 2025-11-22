@@ -9,15 +9,18 @@ import { fomy } from "../../helpers/cssm/fomy";
 import { carListData } from "../../../trash/carListData";
 import { carListRule } from "../../../trash/carListRule";
 import Footer from "../../blend/one/Footer";
-import { useGeneralStore } from "../front/useGeneralStore";
+import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 
 const FrontCarListPage: React.FC = () => {
-    const { items, index, reset, destroy, remove } = useCarStore();
+    const { items, index, destroy, remove } = useCarStore();
     const { regular, svData } = useGeneralStore()
     const navigate = useNavigate()
 
-    const [formValues, setFormValues] = useState<Record<string, any>>(carListData);
+    const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
+    const rules = fomy.getFormRules(fieldSet, 'index')
     const [errors, setErrors] = useState<Record<string, string>>({})
+    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
 
 
     useEffect(() => {
@@ -25,7 +28,6 @@ const FrontCarListPage: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        reset();
         const data = Object.fromEntries(
             Object.entries(formValues)
                 .filter(([key, value]) => value !== "")
@@ -34,29 +36,11 @@ const FrontCarListPage: React.FC = () => {
         index(data);
     }, [formValues]);
 
-    const handleAddClick = () => {
-        navigate("/cars/create");
-    };
-
-    const onClickEdit = (id: Number) => {
-        navigate(`/cars/edit/${id}`);
-    };
-
-
-    const onClickDelete = (id: number) => {
-        remove(id);
-        destroy(id);
-    }
-
     const onChangeForm = (name: string, value: any) => {
-        const newFormValues = fomy.setval(name, value)
-        setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-        if (carListRule[name]) {
-            const instantNewFormValues = { ...formValues, ...newFormValues }
-            const newErrors = fomy.validateOne(name, value, instantNewFormValues, carListRule[name])
-            setErrors(prev => ({ ...prev, ...newErrors }))
-        }
+        const instantNewFormValues = { ...formValues, [name]: value }
+        const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+        setFormValues(instantNewFormValues)
+        setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
     return (
@@ -98,20 +82,12 @@ const FrontCarListPage: React.FC = () => {
                                                 <div className="card-image">
                                                     <img
                                                         src={`${outer.showImage(car.image, 'thumb')}`}
-                                                        alt={car.name}
+                                                        alt={car.title}
                                                         loading="lazy"
                                                     />
                                                 </div>
                                                 <div className="card-body">
-                                                    <h2 className="card-title">{car.name}</h2>
-                                                    <div className="card-actions">
-                                                        <button className="btn" onClick={() => onClickEdit(car.id)}>
-                                                            <i className="fas fa-edit"></i>
-                                                        </button>
-                                                        <button className="btn" onClick={() => onClickDelete(car.id)}>
-                                                            <i className="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    </div>
+                                                    <h2 className="card-title">{car.title}</h2>
                                                     <p className="card-subtitle">{car.brand}</p>
                                                     <div className="card-details">
                                                         <span className="card-price">${car.price}</span>
@@ -126,18 +102,8 @@ const FrontCarListPage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
             <Footer />
-            <button
-                className="floating-add-btn"
-                onClick={handleAddClick}
-                title="Add new"
-            >
-                +
-            </button>
         </>
     );
 };

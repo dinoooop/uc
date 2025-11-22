@@ -1,33 +1,44 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import config from '../../config';
-import type { Contact } from '../../bootstrap/stream/contactType';
-import { contactData } from '../../bootstrap/stream/contactData';
+import type { Contact } from './useGeneral';
 
 const svDataLocal = localStorage.getItem('uc_garage_sv_data') ? JSON.parse(localStorage.getItem('uc_garage_sv_data') as string) : null;
 
-interface GeneralState {
-    contact: Contact;
+interface GeneralStoreProps {
     loading: boolean;
-    sem: string; // server error message
-    ssm: string; // server success message
-    svData: Record<string, any>,
+    serverError: string;
+    ssm: string;
+    statusCode: number;
     resetBeforeRequest: () => void;
+    setErrorResponse: (error: any) => void;
+
+    contact: Contact | null;
+    svData: Record<string, any>,
     send: (data: Record<string, any>) => Promise<void>;
     regular: () => Promise<void>;
 }
 
-export const useGeneralStore = create<GeneralState>((set, get) => ({
-    contact: contactData,
+export const useGeneralStore = create<GeneralStoreProps>((set, get) => ({
     loading: false,
-    sem: '',
+    serverError: '',
     ssm: '',
-    svData: svDataLocal,
+    statusCode: 0,
     resetBeforeRequest: () => set({
         loading: true,
-        sem: '',
+        serverError: '',
         ssm: '',
     }),
+    setErrorResponse: (error: any) => {
+        set({
+            loading: false,
+            serverError: error.response?.data?.message ?? 'Server error',
+            ssm: '',
+            statusCode: error.response?.status ?? 500,
+        });
+    },
+    contact: null,
+    svData: svDataLocal,
     send: async (data) => {
         get().resetBeforeRequest()
         try {
@@ -36,12 +47,9 @@ export const useGeneralStore = create<GeneralState>((set, get) => ({
                 loading: false,
                 ssm: res.data.message,
             });
-        } catch (error: any) {
-            set({
-                loading: false,
-                sem: error.response?.data?.message ?? 'Server Error',
-            });
-            throw error;
+        } catch (err) {
+            get().setErrorResponse(err)
+            throw err;
         }
     },
     regular: async () => {
@@ -54,12 +62,9 @@ export const useGeneralStore = create<GeneralState>((set, get) => ({
                 svData: res.data
             });
             localStorage.setItem('uc_garage_sv_data', JSON.stringify(res.data));
-        } catch (error: any) {
-            set({
-                loading: false,
-                sem: error.response?.data?.message ?? 'Server Error',
-            });
-            throw error;
+        } catch (err) {
+            get().setErrorResponse(err)
+            throw err;
         }
     },
 

@@ -83,4 +83,8 @@ export const imgResizes = {
         { name: "thumb", width: 414, height: imgo.getMeasurement('car_image', 414) },
         { name: "cover", width: 500, height: imgo.getMeasurement('car_image', 500) },
     ],
+    avatar: [
+        { name: "thumb", width: 100, height: imgo.getMeasurement('default', 100) },
+        { name: "cover", width: 350, height: imgo.getMeasurement('default', 350) },
+    ],
 }

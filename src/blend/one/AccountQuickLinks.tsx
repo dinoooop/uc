@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../../helpers/stores/useAuthStore";
 
 const quickLinks = [
     {
@@ -17,10 +18,24 @@ const quickLinks = [
         iconClass: 'fa-solid fa-car',
         title: 'Sell my car'
     },
+    {
+        href: '/account/security',
+        iconClass: 'fa-solid fa-lock',
+        title: 'Security'
+    },
+    
 ]
 
 
 const AccountQuickLinks: React.FC = () => {
+  const { user, logout } = useAuthStore();
+  const navigate = useNavigate();
+
+
+    const handleLogout = () => {
+        logout(); // clear tokens / user info
+        navigate("/login");
+    };
 
     return (
         <aside className="sidebar">
@@ -36,6 +51,13 @@ const AccountQuickLinks: React.FC = () => {
                         </li>
                     ))
                 }
+                <li>
+                    <button className="side-nav-links logout-button" onClick={handleLogout}>
+                        <i className="fa-solid fa-sign-out-alt"></i>
+                        <span className="menu-title">Logout</span>
+                    </button>
+                </li>
+                
             </ul>
         </aside>
     );

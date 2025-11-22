@@ -907,3 +907,31 @@ footer h3 {
 .submit {
   margin-right: 1rem;
 }
+
+
+.profile-page {
+  img {
+    width: 100%;
+  }
+  h2.name {
+    font-size: 3rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  h3 {
+    color: $black;
+    font-size: 2rem;
+  }
+
+  .about{
+    margin-bottom: 2rem;
+  }
+}
+
+.card-page {
+  padding: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: $white;
+}

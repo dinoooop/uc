@@ -49,18 +49,21 @@ export class vr {
         }
 
 
-        if (rules.includes("file")) {
-            if (!(value instanceof File) && typeof value !== "string") {
-                return `Please upload a valid file for (${name}).`;
+        if (rules.includes("file") && value !== null) {
+            // Allow existing file URLs (string values)
+            if (rules.includes("aurl")) {
+                if (typeof value === "string") {
+                    return "";
+                }
+            } else {
+                // It should be a file
+                if (!(value instanceof File)) {
+                    return `Please upload a valid file for (${name}).`;
+                }
             }
         }
 
-        if (rules.includes("image")) {
-            // Allow existing image URLs (string values)
-            if (typeof value === "string" && value.trim() !== "") {
-                return "";
-            }
-
+        if (rules.includes("image") && value !== null) {
             // Allow uploaded File objects that are image types
             if (value instanceof File) {
                 if (!value.type.startsWith("image/")) {
@@ -69,8 +72,7 @@ export class vr {
                 return "";
             }
 
-            // If neither string nor File, it's invalid
-            return `Please upload a valid image file for (${name}).`;
+
         }
 
         const maxSize = vra.getMaxSize(rule);
@@ -78,6 +80,16 @@ export class vr {
             const maxBytes = maxSize * 1024 * 1024;
             if (value.size > maxBytes) {
                 return `The file size for (${name}) must not exceed ${maxSize} MB.`;
+            }
+        }
+
+        const sameField = vra.getSame(rule);
+        if (sameField) {
+            const otherValue =
+                (formValues as any)?.[sameField] ?? null;
+
+            if (value !== otherValue) {
+                return `The ${name} field must match ${sameField}.`;
             }
         }
 

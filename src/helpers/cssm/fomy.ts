@@ -89,7 +89,9 @@ export class fomy {
 
     static getFormValuesOrDummy(fieldSet: FieldConfig, formName: string): Record<string, any> {
 
-        if (formName == 'create' || formName == 'login') {
+        const formsWithDummyValues = ['create', 'login', 'contact']
+
+        if (formsWithDummyValues.includes(formName)) {
             if (config.valuesType == 'dummy') {
                 return this.getDummyValues(fieldSet);
             } else {

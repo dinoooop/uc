@@ -1,22 +1,20 @@
 import React, { useState } from "react";
-import DashboardLayout from "../../blend/layouts/DashboardLayout";
 import { useNavigate } from "react-router-dom";
-import useCarStore from "../../helpers/stores/useCarStore";
-import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
+import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
+import DashboardLayout from "../../blend/layouts/DashboardLayout";
+import InputField from "../../blend/formc/InputField";
 import TextArea from "../../blend/formc/TextArea";
-import Select from "../../blend/formc/Select";
-import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
-import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
+import useUserStore from "../../helpers/stores/useUserStore";
 
 const UserCreatePage: React.FC = () => {
 
-    const { store, loading, serverError } = useCarStore();
+    const { store, loading, serverError } = useUserStore();
 
     const navigate = useNavigate();
-    const fieldSet = fomy.refineFieldSet(carFieldSet, 'create')
+    const fieldSet = fomy.refineFieldSet(userFieldSet, 'create')
     const rules = fomy.getFormRules(fieldSet, 'create')
 
     const [errors, setErrors] = useState<Record<string, string>>({})
@@ -45,7 +43,7 @@ const UserCreatePage: React.FC = () => {
             try {
                 await store(submitData)
                 if (!serverError && !loading) {
-                    navigate('/admin/cars')
+                    navigate('/admin/users')
                 }
             } catch (error) {
                 console.error(error)
@@ -56,41 +54,39 @@ const UserCreatePage: React.FC = () => {
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Create Car</h1>
+                <h1>Create User</h1>
             </div>
             <div className="row">
                 <div className='cardbody'>
                     <form className="front-form" onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-6">
-                                <InputField name="title" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="first_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                             </div>
                             <div className="col-md-6">
-                                <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
+                                <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                             </div>
-                            <div className="col-md-12">
-                                <TextArea name="description" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            <div className="col-md-6">
+                                <InputField name="phone" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                             </div>
-
-
+                            <div className="col-md-6">
+                                <InputField name="password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            </div>
                         </div>
+
                         <div className="row">
                             <div className="col-md-6">
-                                <InputCropFile name="image" imgCropKey="car_image" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
+                                <InputCropFile name="avatar" imgCropKey="default" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
                             </div>
                             <div className="col-md-6">
-                                <InputField name="year" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="price" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="travelled" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="mileage" type="number" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <TextArea name="about" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                             </div>
-
                         </div>
 
                         {serverError && <p className="error-text">{serverError}</p>}
                         {formError && <p className="error-text">{formError}</p>}
 
-                        <Submit cto="/admin/cars" loading={loading} />
+                        <Submit cto="/admin/users" loading={loading} />
                     </form>
                 </div>
             </div>

@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-import { useGeneralStore } from "../../pages/front/useGeneralStore";
+
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import NotFoundPage from "../../pages/front/NotFoundPage";
+import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 
 interface AccountProtectedLayoutProps {
     children: ReactNode;
@@ -17,13 +18,6 @@ const AccountProtectedLayout: React.FC<AccountProtectedLayoutProps> = ({ childre
 
     const navigate = useNavigate()
 
-    const carl = localStorage.getItem('carl')
-
-    if(carl){
-
-        console.log('carl', carl);
-    }
-    
 
     useEffect(() => {
         checkAuth()

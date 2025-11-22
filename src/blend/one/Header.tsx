@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import config from "../../config";
 
@@ -36,13 +36,18 @@ const Header: React.FC = () => {
 
           {/* ✅ Conditionally render Login or Logout */}
           {user ? (
-            <button onClick={handleLogout} className="signin logout">
-              Logout
-            </button>
-          ) : (
-            <a href="/login" className="signin">
-              Sign In
-            </a>
+            user.is_staff ? (
+              <Link to="/admin/cars" className="signin">
+                Admin
+              </Link>
+            ) : (   
+            <Link to="/account/cars" className="signin">
+              Account
+            </Link>
+          )) : (
+            <Link to="/login" className="signin">
+              Login
+            </Link>
           )}
         </nav>
       </div>

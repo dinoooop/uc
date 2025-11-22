@@ -68,6 +68,8 @@ img_resizes = {
         {"name": "thumb", "width": 422, "height": Imgo.get_measurement("car_image", w=422)},
         {"name": "cover", "width": 500, "height": Imgo.get_measurement("car_image", w=500)},
     ],
+    "avatar": [
+        { "name": "thumb", "width": 100, "height": Imgo.get_measurement('default', 100) },
+        { "name": "cover", "width": 350, "height": Imgo.get_measurement('default', 350) },
+    ],
 }
-
-

@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.core.files.storage import default_storage
 from bootstrap.shsm.Imgo import img_resizes
+from django.core.files.storage import FileSystemStorage
 
 
 
@@ -70,14 +71,18 @@ def img_save_crop(request, image_field_name: str = "image"):
             now = datetime.now()
             random_number = random.randint(1000, 9999)
             ext = image_file.name.split('.')[-1].lower()
-            file_name = (
+            new_file_name = (
                 f"{now.year}{now.month:02d}{now.day:02d}_"
                 f"{now.hour:02d}{now.minute:02d}{now.second:02d}_{random_number}.{ext}"
             )
 
-            processed_image = ContentFile(buffer.getvalue(), file_name)
-            default_storage.save(f"uploads/{file_name}", processed_image)
-            return file_name
+            processed_image = ContentFile(buffer.getvalue(), new_file_name)
+            
+            uploads_location = os.path.join(settings.MEDIA_ROOT, "uploads")
+            uploads_storage = FileSystemStorage(location=uploads_location)
+            saved_path = uploads_storage.save(new_file_name, processed_image)
+
+            return new_file_name
         return None
 
     except Exception as e:

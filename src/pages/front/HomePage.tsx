@@ -5,7 +5,6 @@ import Feature from "../../blend/one/Feature";
 import LatestUpload from "../../blend/one/LatestUpload";
 import Testimonial from "../../blend/one/Testimonial";
 import Footer from "../../blend/one/Footer";
-import { useGeneralStore } from "./useGeneralStore";
 
 const HomePage: React.FC = () => {
   

@@ -4,36 +4,28 @@ import { useNavigate, useParams } from "react-router-dom";
 import useUserStore from "../../helpers/stores/useUserStore";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
-import TextArea from "../../blend/formc/TextArea";
-import Select from "../../blend/formc/Select";
-import sta from "../../bootstrap/st/sta";
-import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
 
-const UserEditPage: React.FC = () => {
+const UserSecurityPage: React.FC = () => {
     const { update, loading, serverError, show, item } = useUserStore();
 
     const navigate = useNavigate();
-    const fieldSet = fomy.refineFieldSet(userFieldSet, 'edit')
-    const rules = fomy.getFormRules(fieldSet, 'edit')
+    const fieldSet = fomy.refineFieldSet(userFieldSet, 'security')
+    const rules = fomy.getFormRules(fieldSet, 'security')
 
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [formError, setFormError] = useState<string>('');
-    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'edit'));
+    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'security'));
 
     const params = useParams();
 
     useEffect(() => {
         if (params.id) {
-            const id = parseInt(params.id)
-            show(id)
+            setFormValues(prev => ({ ...prev,  id: params.id }))
         }
     }, [params])
 
-    useEffect(() => {
-        setFormValues(prev => ({ ...prev, ...item }))
-    }, [item])
 
     const onChangeForm = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }
@@ -42,9 +34,6 @@ const UserEditPage: React.FC = () => {
         setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
-    const updateExtraFields = (newFormValue: Record<string, any>) => {
-        setFormValues(prev => ({ ...prev, ...newFormValue }))
-    }
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -68,30 +57,21 @@ const UserEditPage: React.FC = () => {
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Edit User</h1>
+                <h1>Security</h1>
             </div>
             <div className="row">
                 <div className='cardbody'>
                     <form className="front-form" onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col-md-6">
-                                <InputField name="first_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="phone" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <TextArea name="about" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="old_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="new_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="confirm_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                             </div>
-                            
-                            <div className="col-md-6">
-                                <InputCropFile name="avatar" imgCropKey="default" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
-                            </div>
-                            
                         </div>
-
-
 
                         {serverError && <p className="error-text">{serverError}</p>}
                         {formError && <p className="error-text">{formError}</p>}
-
                         <Submit cto="/admin/users" />
                     </form>
                 </div>
@@ -100,4 +80,4 @@ const UserEditPage: React.FC = () => {
     );
 };
 
-export default UserEditPage;
+export default UserSecurityPage;

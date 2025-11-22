@@ -7,9 +7,9 @@ import { Link, useNavigate } from "react-router-dom";
 import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
 import Footer from "../../blend/one/Footer";
-import { useGeneralStore } from "../front/useGeneralStore";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
+import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 
 const AccountCarListPage: React.FC = () => {
     const { items, perPage, total, index, remove, destroy, update, serverError } = useCarStore();
