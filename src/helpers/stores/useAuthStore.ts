@@ -76,7 +76,7 @@ export const useAuthStore = create<AuthState>((set, get) => ({
             });
 
             if (user.is_staff) {
-                window.location.href = '/admin/cars/create';
+                window.location.href = '/admin/cars';
             } else {
                 window.location.href = '/account/cars/create';
             }

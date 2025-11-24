@@ -5,12 +5,17 @@ import useUserStore from "../../helpers/stores/useUserStore";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
 import TextArea from "../../blend/formc/TextArea";
+import Select from "../../blend/formc/Select";
+import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
+import { useAuthStore } from "../../helpers/stores/useAuthStore";
 
-const UserEditPage: React.FC = () => {
+const ProfileEditPage: React.FC = () => {
     const { update, loading, serverError, show, item } = useUserStore();
+    const { user, logout } = useAuthStore();
+
 
     const navigate = useNavigate();
     const fieldSet = fomy.refineFieldSet(userFieldSet, 'edit')
@@ -23,11 +28,10 @@ const UserEditPage: React.FC = () => {
     const params = useParams();
 
     useEffect(() => {
-        if (params.id) {
-            const id = parseInt(params.id)
-            show(id)
+        if (user && user.id) {
+            show(user.id)
         }
-    }, [params])
+    }, [user])
 
     useEffect(() => {
         setFormValues(prev => ({ ...prev, ...item }))
@@ -55,7 +59,7 @@ const UserEditPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    navigate('/admin/users')
+                    // navigate('/admin/users')
                 }
             } catch (error) {
                 console.error(error)
@@ -66,30 +70,35 @@ const UserEditPage: React.FC = () => {
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Edit User 2</h1>
+                <h1>Edit Profile</h1>
             </div>
-            <div className='cardbody'>
-                <form className="front-form" onSubmit={handleSubmit}>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <InputField name="first_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                            <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                            <InputField name="phone" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                            <TextArea name="about" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                        </div>
-                        <div className="col-md-6">
-                            <InputCropFile name="avatar" imgCropKey="default" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
-                        </div>
-                    </div>
+            <div className="row">
+                <div className='cardbody'>
+                    <form className="front-form" onSubmit={handleSubmit}>
+                        <div className="row">
+                            <div className="col-md-6">
+                                <InputField name="first_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <InputField name="phone" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                                <TextArea name="about" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            </div>
 
-                    {serverError && <p className="error-text">{serverError}</p>}
-                    {formError && <p className="error-text">{formError}</p>}
+                            <div className="col-md-6">
+                                <InputCropFile name="avatar" imgCropKey="default" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} updateExtraFields={updateExtraFields} />
+                            </div>
 
-                    <Submit cto="/admin/users" />
-                </form>
+                        </div>
+
+
+                        {serverError && <p className="error-text">{serverError}</p>}
+                        {formError && <p className="error-text">{formError}</p>}
+
+                        <Submit cto="/admin/users" />
+                    </form>
+                </div>
             </div>
         </DashboardLayout>
     );
 };
 
-export default UserEditPage;
+export default ProfileEditPage;

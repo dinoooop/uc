@@ -77,7 +77,7 @@ class UserSerializer(serializers.ModelSerializer):
         is_create = getattr(self, "instance", None) is None
 
         # Ensure username present (derive from email if missing)
-        if not attrs.get("username") and attrs.get("email"):
+        if attrs.get("email"):
             attrs["username"] = attrs["email"]
 
         # On create, password must be present
@@ -98,41 +98,19 @@ class UserSerializer(serializers.ModelSerializer):
             # ensure required
             missing = {}
             if not old_password:
-                missing["old_password"] = "This field is required for password change."
+                raise serializers.ValidationError({"message": "Old password is required."})
             if not new_password:
-                missing["new_password"] = "This field is required for password change."
+                raise serializers.ValidationError({"message": "new password is required."})
             if not confirm_password:
-                missing["confirm_password"] = "This field is required for password change."
-            if missing:
-                raise serializers.ValidationError(missing)
-
+                raise serializers.ValidationError({"message": "confirm password is required."})
+            
             # check old password correctness
             user = request.user
             if not user.check_password(old_password):
-                raise serializers.ValidationError({"old_password": "Old password is incorrect."})
+                raise serializers.ValidationError({"message": "Old password is incorrect."})
 
-            # new != old
-            # if old_password and new_password and old_password == new_password:
-            #     raise serializers.ValidationError({"new_password": "New password must be different from the old password."})
-
-            # new == confirm
             if new_password != confirm_password:
-                raise serializers.ValidationError({"confirm_password": "New password and confirm password do not match."})
-
-            # run django password validators for new password
-            # try:
-            #     validate_password(new_password, user=user)
-            # except Exception as exc:
-            #     # exc may be a Django ValidationError with message list
-            #     raise serializers.ValidationError({"new_password": list(exc.messages)})
-
-        # If a direct 'password' field is provided (create or explicit update),
-        # validate it with Django validators as well.
-        # if password:
-        #     try:
-        #         validate_password(password, user=getattr(self, "instance", None))
-        #     except Exception as exc:
-        #         raise serializers.ValidationError({"password": list(exc.messages)})
+                raise serializers.ValidationError({"message": "New password and confirm password are not matching."})
 
         return attrs
 
@@ -201,6 +179,9 @@ class UserSerializer(serializers.ModelSerializer):
         # If developer included `password` field directly in edit (not recommended),
         # we'll accept and set it — otherwise password is optional and not required.
         password = validated_data.pop("password", None)
+
+        print("updating user")
+        print(f"validated_data: {validated_data}")
 
         # update user fields (email, first_name, username, etc.)
         for attr, value in validated_data.items():

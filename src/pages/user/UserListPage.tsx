@@ -79,6 +79,7 @@ const UserListPage: React.FC = () => {
                                             <td className='action'>
                                                 <AppIcon onClick={(arg) => handleDelete(Number(arg))} itemId={item.id} icon="trash" />
                                                 <AppIcon to={`/admin/users/edit/${item.id}`} icon="edit" />
+                                                <AppIcon to={`/admin/users/security/${item.id}`} icon="lock" />
                                             </td>
                                         </tr>
                                     ))

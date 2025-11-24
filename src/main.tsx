@@ -21,6 +21,8 @@ import UserSecurityPage from "./pages/user/UserSecurityPage";
 import AccountProfilePage from "./pages/user/AccountProfilePage";
 import AccountProfileEditPage from "./pages/user/AccountProfileEditPage";
 import AccountSecurityPage from "./pages/user/AccountSecurityPage";
+import ProfileEditPage from "./pages/user/ProfileEditPage";
+import ProfileSecurityPage from "./pages/user/ProfileSecurityPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -42,6 +44,8 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/account/cars/edit/:id" element={<AccountCarEditPage />} />
 
         {/* ADMIN */}
+        <Route path="/admin/profile" element={<ProfileEditPage />} />
+        <Route path="/admin/profile/security" element={<ProfileSecurityPage />} />
         <Route path="/admin/cars" element={<CarListPage />} />
         <Route path="/admin/cars/create" element={<CarCreatePage />} />
         <Route path="/admin/cars/edit/:id" element={<CarEditPage />} />

@@ -5,7 +5,7 @@ import { useAuthStore } from "../../helpers/stores/useAuthStore";
 const quickLinks = [
     {
         href: '/account/profile',
-        iconClass: 'fa-solid fa-user',
+        iconClass: 'fa-solid fa-address-card',
         title: 'Profile'
     },
     {

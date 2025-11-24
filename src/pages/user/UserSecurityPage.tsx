@@ -22,7 +22,7 @@ const UserSecurityPage: React.FC = () => {
 
     useEffect(() => {
         if (params.id) {
-            setFormValues(prev => ({ ...prev,  id: params.id }))
+            setFormValues(prev => ({ ...prev, id: params.id }))
         }
     }, [params])
 
@@ -59,22 +59,20 @@ const UserSecurityPage: React.FC = () => {
             <div className="page-header">
                 <h1>Security</h1>
             </div>
-            <div className="row">
-                <div className='cardbody'>
-                    <form className="front-form" onSubmit={handleSubmit}>
-                        <div className="row">
-                            <div className="col-md-6">
-                                <InputField name="old_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="new_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                                <InputField name="confirm_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
-                            </div>
+            <div className='cardbody'>
+                <form className="front-form" onSubmit={handleSubmit}>
+                    <div className="row">
+                        <div className="col-md-6">
+                            <InputField name="old_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            <InputField name="new_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+                            <InputField name="confirm_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                         </div>
+                    </div>
 
-                        {serverError && <p className="error-text">{serverError}</p>}
-                        {formError && <p className="error-text">{formError}</p>}
-                        <Submit cto="/admin/users" />
-                    </form>
-                </div>
+                    {serverError && <p className="error-text">{serverError}</p>}
+                    {formError && <p className="error-text">{formError}</p>}
+                    <Submit cto="/admin/users" />
+                </form>
             </div>
         </DashboardLayout>
     );

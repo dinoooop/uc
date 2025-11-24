@@ -58,7 +58,7 @@ const InputField: React.FC<InputFieldProps> = ({
         disabled={disabled}
       />
       {description && <p className="field-description">{description}</p>}
-      {error && <div className="color-red">{error}</div>}
+      {error && <div className="error-text">{error}</div>}
     </div>
   );
 };

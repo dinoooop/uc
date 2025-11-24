@@ -1,7 +1,7 @@
 export const authFieldSet = {
     email: {
         forms: 'login|register',
-        dummyValue: 'john@example.com',
+        dummyValue: 'john@mail.com',
         // dummyValue: 'admin@mail.com',
         loginRule: 'required|email',
         registerRule: 'required|email',

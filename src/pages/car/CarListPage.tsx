@@ -15,7 +15,6 @@ const CarListPage: React.FC = () => {
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
 
     useEffect(() => {
-        reset()
         const data = Object.fromEntries(
             Object.entries(formValues)
                 .filter(([key, value]) => value !== "")

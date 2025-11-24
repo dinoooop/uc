@@ -7,7 +7,7 @@ type SubmitProps = {
     cssClass?: string;
 };
 
-export default function Submit({ label, cto, loading, cssClass = 'btn submit' }: SubmitProps) {
+export default function Submit({ label, cto, loading, cssClass = 'btn submit mt-1' }: SubmitProps) {
     
     const newLabel = loading? "..." : (label ?? "Submit")
     return (
