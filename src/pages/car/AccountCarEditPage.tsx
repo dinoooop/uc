@@ -61,7 +61,7 @@ const AccountCarEditPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    // navigate('/account/cars')
+                    navigate('/account/cars')
                 }
             } catch (error) {
                 console.error(error)

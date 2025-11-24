@@ -1,4 +1,10 @@
 export const authFieldSet = {
+    first_name: {
+        label: 'Full Name',
+        forms: 'register',
+        dummyValue: 'John Doe',
+        registerRule: 'required|string',
+    },
     email: {
         forms: 'login|register',
         dummyValue: 'john@mail.com',
@@ -10,6 +16,11 @@ export const authFieldSet = {
         forms: 'login|register',
         dummyValue: 'welcome',
         loginRule: 'required|string',
+        registerRule: 'required|string',
+    },
+    confirm_password: {
+        forms: 'register',
+        dummyValue: 'welcome',
         registerRule: 'required|string',
     },
 }

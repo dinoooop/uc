@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useUserStore from "../../helpers/stores/useUserStore";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
@@ -13,7 +13,7 @@ import { useAuthStore } from "../../helpers/stores/useAuthStore";
 
 const AccountSecurityPage: React.FC = () => {
     const { update, loading, serverError, show, item } = useUserStore();
-    const { user, logout } = useAuthStore();
+    const { user } = useAuthStore();
 
 
     const navigate = useNavigate();
@@ -24,7 +24,6 @@ const AccountSecurityPage: React.FC = () => {
     const [formError, setFormError] = useState<string>('');
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'security'));
 
-    const params = useParams();
 
     useEffect(() => {
         if (user && user.id) {
@@ -43,10 +42,6 @@ const AccountSecurityPage: React.FC = () => {
         setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
-    const updateExtraFields = (newFormValue: Record<string, any>) => {
-        setFormValues(prev => ({ ...prev, ...newFormValue }))
-    }
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         const validated = fomy.validateMany(formValues, rules)
@@ -58,7 +53,7 @@ const AccountSecurityPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    // navigate('/account/profile')
+                    navigate('/account/profile')
                 }
             } catch (error) {
                 console.error(error)

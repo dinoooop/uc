@@ -50,12 +50,13 @@ const InputCropFile: React.FC<InputCropFileProps> = ({
   }, [formValues]);
 
 
-  const handleOnComplete = async (c: Crop, percentCrop: Crop) => {
+  const handleOnComplete = async (_: Crop, percentCrop: Crop) => {
 
     // onChangeForm(`${name}_x`, percentCrop.x)
     // onChangeForm(`${name}_y`, percentCrop.y)
     // onChangeForm(`${name}_w`, percentCrop.width)
     // onChangeForm(`${name}_h`, percentCrop.height)
+    
     const theCrop = {
       x: percentCrop.x,
       y: percentCrop.y,

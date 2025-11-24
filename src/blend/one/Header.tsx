@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import config from "../../config";
 
 const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const navigate = useNavigate();
-
-  // ✅ Access auth state
-  const { user, logout } = useAuthStore();
+  const { user } = useAuthStore();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,11 +15,6 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  const handleLogout = () => {
-    logout(); // clear tokens / user info
-    navigate("/login");
-  };
 
   return (
     <header className={`header bg-grey ${isScrolled ? "scrolled" : ""}`}>

@@ -7,7 +7,8 @@ import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
 import InputField from "../../blend/formc/InputField";
 
 const UserListPage: React.FC = () => {
-    const { items, perPage, total, index, remove, destroy, update, serverError } = useUserStore();
+    // const { items, perPage, total, index, remove, destroy, update, serverError } = useUserStore();
+    const { items, index, remove, destroy, serverError } = useUserStore();
 
     const fieldSet = fomy.refineFieldSet(userFieldSet, 'index')
     const rules = fomy.getFormRules(fieldSet, 'index')
@@ -17,7 +18,7 @@ const UserListPage: React.FC = () => {
     useEffect(() => {
         const data = Object.fromEntries(
             Object.entries(formValues)
-                .filter(([key, value]) => value !== "")
+                .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
         index(data);
@@ -29,9 +30,9 @@ const UserListPage: React.FC = () => {
         destroy(id);
     }
 
-    const handlePagination = (pageNo: number) => {
-        setFormValues(prev => ({ ...prev, page: pageNo }));
-    }
+    // const handlePagination = (pageNo: number) => {
+    //     setFormValues(prev => ({ ...prev, page: pageNo }));
+    // }
 
     const onChangeForm = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }

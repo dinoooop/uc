@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashboardLayout from "../../blend/layouts/DashboardLayout";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useUserStore from "../../helpers/stores/useUserStore";
 import InputField from "../../blend/formc/InputField";
 import { fomy } from "../../helpers/cssm/fomy";
@@ -9,7 +9,7 @@ import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 
 const ProfileSecurityPage: React.FC = () => {
-    const { update, loading, serverError, show, item } = useUserStore();
+    const { update, loading, serverError } = useUserStore();
     const { user } = useAuthStore();
 
     const navigate = useNavigate();
@@ -20,7 +20,6 @@ const ProfileSecurityPage: React.FC = () => {
     const [formError, setFormError] = useState<string>('');
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'security'));
 
-    const params = useParams();
 
     useEffect(() => {
         if (user && user.id) {
@@ -48,7 +47,7 @@ const ProfileSecurityPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    // navigate('/admin/users')
+                    navigate('/admin/users')
                 }
             } catch (error) {
                 console.error(error)

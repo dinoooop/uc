@@ -28,7 +28,7 @@ const quickLinks = [
 
 
 const AccountQuickLinks: React.FC = () => {
-  const { user, logout } = useAuthStore();
+  const { logout } = useAuthStore();
   const navigate = useNavigate();
 
 

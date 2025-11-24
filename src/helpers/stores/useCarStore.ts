@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 import config from '../../config';
 import type { Car } from '../../bootstrap/stream/carItem';
 import { header } from '../cssm/header';

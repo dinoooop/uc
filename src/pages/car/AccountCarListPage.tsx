@@ -1,58 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
-import { Link, useNavigate } from "react-router-dom";
-import RangeFilter from "../../blend/formc/RangeFilter";
-import { fomy } from "../../helpers/cssm/fomy";
+import { Link } from "react-router-dom";
 import Footer from "../../blend/one/Footer";
-import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
 import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import AppIcon from "../../blend/one/AppIcon";
 
 const AccountCarListPage: React.FC = () => {
-    const { items, perPage, total, index, remove, destroy, update, serverError } = useCarStore();
-    const { regular, svData } = useGeneralStore()
-    const navigate = useNavigate();
-
-    const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
-    const rules = fomy.getFormRules(fieldSet, 'index')
-    const [errors, setErrors] = useState<Record<string, string>>({})
-    const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
+    const { items, index, remove, destroy } = useCarStore();
+    const { regular } = useGeneralStore()
 
     useEffect(() => {
         regular()
+        index({action: 'account_car_list'});
     }, [])
 
-    useEffect(() => {
-        const data = Object.fromEntries(
-            Object.entries(formValues)
-                .filter(([key, value]) => value !== "")
-                .map(([key, value]) => [key, value])
-        );
-        index(data);
-    }, [formValues]);
-
-    const handleAddClick = () => {
-        navigate("/cars/create");
-    };
-
-    const onClickEdit = (id: Number) => {
-        navigate(`/account/cars/edit/${id}`);
-    };
-
-
-    const onClickDelete = (id: number) => {
+    const handleDelete = (id: number) => {
         remove(id);
         destroy(id);
-    }
-
-    const onChangeForm = (name: string, value: any) => {
-        const instantNewFormValues = { ...formValues, [name]: value }
-        const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
-        setFormValues(instantNewFormValues)
-        setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
     return (
@@ -85,12 +53,8 @@ const AccountCarListPage: React.FC = () => {
                                                 <div className="card-body">
                                                     <h2 className="card-title">{car.title}</h2>
                                                     <div className="card-actions">
-                                                        <button className="btn" onClick={() => onClickEdit(car.id)}>
-                                                            <i className="fas fa-edit"></i>
-                                                        </button>
-                                                        <button className="btn" onClick={() => onClickDelete(car.id)}>
-                                                            <i className="fas fa-trash-alt"></i>
-                                                        </button>
+                                                        <AppIcon onClick={(arg) => handleDelete(Number(arg))} itemId={car.id} icon="trash" />
+                                                        <AppIcon to={`/account/cars/edit/${car.id}`} icon="edit" />
                                                     </div>
                                                     <p className="card-subtitle">{car.brand}</p>
                                                     <div className="card-details">
@@ -111,13 +75,12 @@ const AccountCarListPage: React.FC = () => {
 
             </div>
             <Footer />
-            <button
+            <Link to="/account/cars/create"
                 className="floating-add-btn"
-                onClick={handleAddClick}
                 title="Add new"
             >
                 +
-            </button>
+            </Link>
         </>
     );
 };

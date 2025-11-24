@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import { fomy } from "../../helpers/cssm/fomy";
 import InputField from "../../blend/formc/InputField";
@@ -9,8 +9,7 @@ import Submit from "../../blend/one/Submit";
 
 
 const LoginPage: React.FC = () => {
-  const { login, user, loading, serverError } = useAuthStore();
-  const navigate = useNavigate();
+  const { login, loading, serverError } = useAuthStore();
   const fieldSet = fomy.refineFieldSet(authFieldSet, 'login')
   const rules = fomy.getFormRules(fieldSet, 'login')
 

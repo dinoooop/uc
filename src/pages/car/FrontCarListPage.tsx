@@ -3,23 +3,17 @@ import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
-import { useNavigate } from "react-router-dom";
 import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
-import { carListData } from "../../../trash/carListData";
-import { carListRule } from "../../../trash/carListRule";
 import Footer from "../../blend/one/Footer";
 import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 
 const FrontCarListPage: React.FC = () => {
-    const { items, index, destroy, remove } = useCarStore();
+    const { items, index } = useCarStore();
     const { regular, svData } = useGeneralStore()
-    const navigate = useNavigate()
 
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
-    const rules = fomy.getFormRules(fieldSet, 'index')
-    const [errors, setErrors] = useState<Record<string, string>>({})
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
 
 
@@ -30,7 +24,7 @@ const FrontCarListPage: React.FC = () => {
     useEffect(() => {
         const data = Object.fromEntries(
             Object.entries(formValues)
-                .filter(([key, value]) => value !== "")
+                .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
         index(data);
@@ -38,9 +32,7 @@ const FrontCarListPage: React.FC = () => {
 
     const onChangeForm = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }
-        const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
         setFormValues(instantNewFormValues)
-        setErrors(prev => ({ ...prev, ...newErrors }))
     }
 
     return (
@@ -64,10 +56,10 @@ const FrontCarListPage: React.FC = () => {
                                 </div>
 
                                 {/* Range Filters */}
-                                <RangeFilter name="year" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Year" min={svData.min_year} max={svData.max_year} />
-                                <RangeFilter name="price" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Price ($)" min={svData.min_price} max={svData.max_price} step={10000} />
-                                <RangeFilter name="travelled" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Travelled (km)" min={0} max={200000} step={1000} />
-                                <RangeFilter name="mileage" formValues={formValues} onChangeForm={onChangeForm} errors={errors} label="Mileage (km/l)" min={5} max={40} step={1} />
+                                <RangeFilter name="year" onChangeForm={onChangeForm} label="Year" min={svData.min_year} max={svData.max_year} />
+                                <RangeFilter name="price" onChangeForm={onChangeForm} label="Price ($)" min={svData.min_price} max={svData.max_price} step={10000} />
+                                <RangeFilter name="travelled" onChangeForm={onChangeForm} label="Travelled (km)" min={0} max={200000} step={1000} />
+                                <RangeFilter name="mileage" onChangeForm={onChangeForm} label="Mileage (km/l)" min={5} max={40} step={1} />
                             </aside>
                         </div>
                         <div className="col-md-9">

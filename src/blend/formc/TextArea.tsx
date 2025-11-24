@@ -1,5 +1,4 @@
 import React from "react";
-import { fm } from "./fm";
 
 interface TextAreaFieldProps {
   name: string;
@@ -17,8 +16,6 @@ const TextArea: React.FC<TextAreaFieldProps> = ({
   formValues,
   errors,
   onChangeForm,
-  id = '',
-  label = '',
 }) => {
 
   if (!fieldSet[name]) {

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Header from "../../blend/one/Header";
 import Banner from "../../blend/one/Banner";
 import Feature from "../../blend/one/Feature";

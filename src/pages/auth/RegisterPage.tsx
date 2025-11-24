@@ -1,46 +1,38 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
-import { registerRule } from "../../bootstrap/stream/registerRule";
 import { fomy } from "../../helpers/cssm/fomy";
 import InputField from "../../blend/formc/InputField";
-import { registerDummy } from "../../bootstrap/stream/registerDummy";
 import config from "../../config";
-import { registerData } from "../../bootstrap/stream/registerData";
+import { authFieldSet } from "../../bootstrap/stream/authFieldSet";
+import Submit from "../../blend/one/Submit";
+
 
 const RegisterPage: React.FC = () => {
   const { register, loading, serverError } = useAuthStore();
-  const navigate = useNavigate();
-
-  const initFormValues = config.valuesType == 'dummy' ? registerDummy : registerData;
-  const [formValues, setFormValues] = useState(initFormValues);
+  const fieldSet = fomy.refineFieldSet(authFieldSet, 'register')
+  const rules = fomy.getFormRules(fieldSet, 'register')
 
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'register'));
+
 
   const onChangeForm = (name: string, value: any) => {
-    const newFormValues = fomy.setval(name, value)
-    setFormValues(prev => ({ ...prev, ...newFormValues }))
-
-    if (registerRule[name]) {
-      const instantNewFormValues = { ...formValues, ...newFormValues }
-      const newErrors = fomy.validateOne(name, value, instantNewFormValues, registerRule[name])
-      setErrors(prev => ({ ...prev, ...newErrors }))
-    }
+    const instantNewFormValues = { ...formValues, [name]: value }
+    const newErrors = fomy.validateOne(name, instantNewFormValues, rules)
+    setFormValues(instantNewFormValues)
+    setErrors(prev => ({ ...prev, ...newErrors }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
-
     e.preventDefault()
-    console.log('handleSubmit')
-    const validated = fomy.validateMany(formValues, registerRule)
+    const validated = fomy.validateMany(formValues, rules)
     if (!validated.allErrorsFalse) {
       setErrors(validated.updatedErrors)
     } else {
+      const submitData = fomy.prepareSubmit(formValues)
       try {
-        await register(formValues)
-        if (!serverError && !loading) {
-          navigate('/admin/profile')
-        }
+        await register(submitData)
       } catch (error) {
         console.error(error)
       }
@@ -50,27 +42,21 @@ const RegisterPage: React.FC = () => {
   return (
     <div className="auth-page">
       <div className="auth-box">
-        
+
         <div className="text-center">
           <div className="logo">{config.appName}</div>
           <h1 className="title">Sign Up</h1>
         </div>
 
         <form className="front-form" onSubmit={handleSubmit} noValidate={true}>
-          <InputField name="full_name" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-          <InputField name="email" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-          <InputField name="password" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
-          <InputField name="confirm_password" formValues={formValues} onChangeForm={onChangeForm} errors={errors} />
+          <InputField name="full_name" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+          <InputField name="email" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+          <InputField name="password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
+          <InputField name="confirm_password" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
 
-          {serverError && <p className="error-text">{serverError}</p>}
+          {serverError && <p className="color-red">{serverError}</p>}
 
-          <button
-            type="submit"
-            className="btn big"
-            disabled={loading}
-          >
-            {loading ? "Creating account..." : "Sign Up"}
-          </button>
+          <Submit label="Sign Up" cssClass="btn big mt-1" loading={loading} />
         </form>
 
         <div className="auth-footer text-center">

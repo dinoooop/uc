@@ -8,7 +8,7 @@ import Submit from "../../blend/one/Submit";
 import { userFieldSet } from "../../bootstrap/stream/userFieldSet";
 
 const UserSecurityPage: React.FC = () => {
-    const { update, loading, serverError, show, item } = useUserStore();
+    const { update, loading, serverError } = useUserStore();
 
     const navigate = useNavigate();
     const fieldSet = fomy.refineFieldSet(userFieldSet, 'security')
@@ -46,7 +46,7 @@ const UserSecurityPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    // navigate('/admin/users')
+                    navigate('/admin/users')
                 }
             } catch (error) {
                 console.error(error)

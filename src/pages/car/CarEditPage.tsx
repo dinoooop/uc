@@ -12,7 +12,7 @@ import Submit from "../../blend/one/Submit";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 
 const CarEditPage: React.FC = () => {
-    const { update, loading, serverError, show, reset, item } = useCarStore();
+    const { update, loading, serverError, show, item } = useCarStore();
 
     const navigate = useNavigate();
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'edit')
@@ -25,7 +25,6 @@ const CarEditPage: React.FC = () => {
     const params = useParams();
 
     useEffect(() => {
-        reset()
         if (params.id) {
             const id = parseInt(params.id)
             show(id)
@@ -58,7 +57,7 @@ const CarEditPage: React.FC = () => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    // navigate('/admin/cars')
+                    navigate('/admin/cars')
                 }
             } catch (error) {
                 console.error(error)

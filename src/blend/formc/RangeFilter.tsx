@@ -3,9 +3,7 @@ import { fm } from "./fm";
 
 interface RangeFilterProps {
     name: string;
-    formValues: Record<string, any>;
     onChangeForm: (name: string, value: any) => void;
-    errors: Record<string, string>;
     id?: string | null;
     label?: string;
     min: number;
@@ -16,16 +14,14 @@ interface RangeFilterProps {
 
 const RangeFilter: React.FC<RangeFilterProps> = ({
     name,
-    formValues,
     onChangeForm,
-    errors,
     id = null,
     label, min, max, step = 1, unit = ""
 }) => {
     const newId = id ?? name;
     const newLabel = label || fm.getLabel(name);
-    const value = formValues[name] ?? "";
-    const error = errors[name] ?? "";
+    // const value = formValues[name] ?? "";
+    // const error = errors[name] ?? "";
 
     const [minValue, setMinValue] = useState(min);
     const [maxValue, setMaxValue] = useState(max);

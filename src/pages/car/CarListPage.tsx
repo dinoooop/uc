@@ -7,7 +7,7 @@ import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 import InputField from "../../blend/formc/InputField";
 
 const CarListPage: React.FC = () => {
-    const { items, perPage, total, index, remove, destroy, update, serverError } = useCarStore();
+    const { items, index, remove, destroy, serverError } = useCarStore();
 
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
     const rules = fomy.getFormRules(fieldSet, 'index')
@@ -17,7 +17,7 @@ const CarListPage: React.FC = () => {
     useEffect(() => {
         const data = Object.fromEntries(
             Object.entries(formValues)
-                .filter(([key, value]) => value !== "")
+                .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
         index(data);
@@ -29,9 +29,7 @@ const CarListPage: React.FC = () => {
         destroy(id);
     }
 
-    const handlePagination = (pageNo: number) => {
-        setFormValues(prev => ({ ...prev, page: pageNo }));
-    }
+
 
     const onChangeForm = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }

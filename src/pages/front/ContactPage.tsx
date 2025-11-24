@@ -15,7 +15,6 @@ const ContactPage: React.FC = () => {
     const rules = fomy.getFormRules(fieldSet, 'contact')
 
     const [errors, setErrors] = useState<Record<string, string>>({})
-    const [formError, setFormError] = useState<string>('');
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'contact'));
 
     const onChangeForm = (name: string, value: any) => {
@@ -30,7 +29,7 @@ const ContactPage: React.FC = () => {
         const validated = fomy.validateMany(formValues, rules)
         if (!validated.allErrorsFalse) {
             setErrors(validated.updatedErrors)
-            setFormError(validated.firstError)
+            // setFormError(validated.firstError)
         } else {
             const submitData = fomy.prepareSubmit(formValues)
             try {
