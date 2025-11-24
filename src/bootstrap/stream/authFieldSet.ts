@@ -1,5 +1,5 @@
 export const authFieldSet = {
-    first_name: {
+    full_name: {
         label: 'Full Name',
         forms: 'register',
         dummyValue: 'John Doe',
