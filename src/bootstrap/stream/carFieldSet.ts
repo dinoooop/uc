@@ -63,18 +63,18 @@ export const carFieldSet = {
     },
     // Front index fields
     price_min: {
-        forms: 'front_index',
+        forms: 'index',
         indexRule: 'number',
         indexValue: 100,
     },
     price_max: {
-        forms: 'front_index',
+        forms: 'index',
         indexRule: 'number',
-        indexValue: 10000,
+        indexValue: 100000,
     },
     // Index fields
     search: {
-        forms: 'front_index|index',
+        forms: 'index',
         indexRule: 'string',
     },
     so: {
