@@ -35,7 +35,7 @@ const AccountProtectedLayout: React.FC<AccountProtectedLayoutProps> = ({ childre
                 statusCode == 404 ?
                     <NotFoundPage />
                     :
-                    <div className="account-page">
+                    <div className="front account-page">
                         {children}
                     </div>
 

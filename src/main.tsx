@@ -23,6 +23,12 @@ import AccountProfileEditPage from "./pages/user/AccountProfileEditPage";
 import AccountSecurityPage from "./pages/user/AccountSecurityPage";
 import ProfileEditPage from "./pages/user/ProfileEditPage";
 import ProfileSecurityPage from "./pages/user/ProfileSecurityPage";
+import CarShowPage from "./pages/car/CarShowPage";
+import AccountCarShowPage from "./pages/car/AccountCarShowPage";
+import FrontCarShowPage from "./pages/car/FrontCarShowPage";
+import BrandListPage from "./pages/brand/BrandListPage";
+import BrandCreatePage from "./pages/brand/BrandCreatePage";
+import BrandEditPage from "./pages/brand/BrandEditPage";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -34,6 +40,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/cars" element={<FrontCarListPage />} />
+        <Route path="/cars/:id" element={<FrontCarShowPage />} />
 
         {/* ACCOUNT */}
         <Route path="/account/profile" element={<AccountProfilePage />} />
@@ -42,6 +49,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/account/cars" element={<AccountCarListPage />} />
         <Route path="/account/cars/create" element={<AccountCarCreatePage />} />
         <Route path="/account/cars/edit/:id" element={<AccountCarEditPage />} />
+        <Route path="/account/cars/:id" element={<AccountCarShowPage />} />
 
         {/* ADMIN */}
         <Route path="/admin/profile" element={<ProfileEditPage />} />
@@ -49,10 +57,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <Route path="/admin/cars" element={<CarListPage />} />
         <Route path="/admin/cars/create" element={<CarCreatePage />} />
         <Route path="/admin/cars/edit/:id" element={<CarEditPage />} />
+        <Route path="/admin/cars/:id" element={<CarShowPage />} />
         <Route path="/admin/users" element={<UserListPage />} />
         <Route path="/admin/users/create" element={<UserCreatePage />} />
         <Route path="/admin/users/edit/:id" element={<UserEditPage />} />
         <Route path="/admin/users/security/:id" element={<UserSecurityPage />} />
+
+        <Route path="/admin/brands" element={<BrandListPage />} />
+        <Route path="/admin/brands/create" element={<BrandCreatePage />} />
+        <Route path="/admin/brands/edit/:id" element={<BrandEditPage />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

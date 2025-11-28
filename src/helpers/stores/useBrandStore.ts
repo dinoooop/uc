@@ -1,10 +1,10 @@
 import { create } from 'zustand';
 import axios from 'axios';
 import config from '../../config';
-import type { Car } from '../../bootstrap/stream/carItem';
 import { header } from '../cssm/header';
+import type { Brand } from '../../bootstrap/stream/brandItem';
 
-interface CarsState {
+interface BrandState {
     loading: boolean;
     serverError: string;
     ssm: string;
@@ -12,8 +12,8 @@ interface CarsState {
     resetBeforeRequest: () => void;
     setErrorResponse: (error: any) => void;
 
-    items: Car[];
-    item: Car | null;
+    items: Brand[];
+    item: Brand | null;
     perPage: number;
     total: number;
     index: (params?: Record<string, any>) => Promise<void>;
@@ -24,7 +24,7 @@ interface CarsState {
     remove: (id: number) => void
 }
 
-const useCarStore = create<CarsState>((set, get) => ({
+const useBrandStore = create<BrandState>((set, get) => ({
 
     loading: false,
     serverError: '',
@@ -52,23 +52,18 @@ const useCarStore = create<CarsState>((set, get) => ({
     index: async (params = {}) => {
         try {
             get().resetBeforeRequest()
-            const response = await axios.get(`${config.api}/cars/`, {
+            const response = await axios.get(`${config.api}/brands/`, {
                 params,
                 headers: header.json().headers,
             });
-            
-            if (params.action === 'latest_cars') {
-                set({
-                    items: response.data || [],
-                });
-            } else {
-                set({
-                    items: response.data.results || [],
-                    perPage: response.data.per_page,
-                    total: response.data.total_pages,
-                    loading: false,
-                });
-            }
+
+            set({
+                items: response.data.results || [],
+                perPage: response.data.per_page,
+                total: response.data.total_pages,
+                loading: false,
+            });
+
 
         } catch (err) {
             get().setErrorResponse(err)
@@ -78,7 +73,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     show: async (id: number): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            const response = await axios.get(`${config.api}/cars/show/${id}`, header.json());
+            const response = await axios.get(`${config.api}/brands/show/${id}`, header.json());
             set({ loading: false, item: response.data });
         } catch (err) {
             get().setErrorResponse(err)
@@ -89,7 +84,7 @@ const useCarStore = create<CarsState>((set, get) => ({
         try {
             get().resetBeforeRequest()
             const theHeader = (data instanceof FormData) ? header.formdata() : header.json();
-            await axios.post(`${config.api}/cars/store/`, data, theHeader);
+            await axios.post(`${config.api}/brands/store/`, data, theHeader);
             set({ loading: false });
         } catch (err) {
             get().setErrorResponse(err)
@@ -101,7 +96,7 @@ const useCarStore = create<CarsState>((set, get) => ({
             get().resetBeforeRequest()
             const theHeader = (data instanceof FormData) ? header.formdata() : header.json();
             const theId = (data instanceof FormData) ? data.get("id") : data.id;
-            await axios.put(`${config.api}/cars/update/${theId}/`, data, theHeader);
+            await axios.put(`${config.api}/brands/update/${theId}/`, data, theHeader);
             set({ loading: false });
         } catch (err) {
             get().setErrorResponse(err)
@@ -111,7 +106,7 @@ const useCarStore = create<CarsState>((set, get) => ({
     destroy: async (id: number): Promise<void> => {
         try {
             get().resetBeforeRequest()
-            await axios.delete(`${config.api}/cars/delete/${id}/`, header.json())
+            await axios.delete(`${config.api}/brands/delete/${id}/`, header.json())
             set({ loading: false });
         } catch (err) {
             get().setErrorResponse(err)
@@ -120,10 +115,10 @@ const useCarStore = create<CarsState>((set, get) => ({
     },
     remove: (id) => {
         set((state: any) => ({
-            items: state.items.filter((item: Car) => item.id !== id),
+            items: state.items.filter((item: Brand) => item.id !== id),
         }))
     },
 
 }));
 
-export default useCarStore;
+export default useBrandStore;

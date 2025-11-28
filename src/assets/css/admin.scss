@@ -242,59 +242,7 @@
         }
     }
 
-    .btn {
-        background-color: $color-3;
-        color: $color-1;
-        padding: 0.5rem 1.5rem;
-        border-radius: 0.2rem;
-        cursor: pointer;
-        transition: all 200ms ease;
-        margin-right: 0.5rem;
-        margin-top: 0.3rem;
-    }
-
-    .btn.big {
-        padding: 0.5rem 2rem;
-        font-size: 1.2rem;
-        width: 100%;
-    }
-
-    a.big {
-        text-align: center;
-        display: inline-block;
-    }
-
-    .btn.btn-border {
-        background-color: transparent;
-        border: 1px solid $color-4;
-        width: 100%;
-    }
-
-    .btn i {
-        margin-right: 0.5rem;
-    }
-
-    .btn:hover {
-        background-color: $vibrant;
-        color: var(--black);
-    }
-
-    i.icon {
-        background-color: $color-4;
-        color: $color-1;
-        padding: 0.5rem;
-        border-radius: 0.2rem;
-        cursor: pointer;
-        transition: all 200ms ease;
-    }
-
-    i.icon:hover {
-        background-color: $color-3;
-    }
-
-    i.icon.vibrant {
-        background-color: $vibrant;
-    }
+    
 
     .analytics-row {
         display: flex;
@@ -1280,6 +1228,10 @@
 
     .error-text {
         color: $danger;
+    }
+
+    i.icon {
+        color: $grey;
     }
 
 }

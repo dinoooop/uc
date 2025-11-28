@@ -8,6 +8,7 @@ import Footer from "../../blend/one/Footer";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
 import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 import AppIcon from "../../blend/one/AppIcon";
+import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";
 
 const AccountCarListPage: React.FC = () => {
     const { items, index, remove, destroy } = useCarStore();
@@ -24,7 +25,7 @@ const AccountCarListPage: React.FC = () => {
     }
 
     return (
-        <>
+        <AccountProtectedLayout>
             <Header />
             <MiniBanner page="my_cars" />
             <div className="part bg-grey">
@@ -44,11 +45,13 @@ const AccountCarListPage: React.FC = () => {
                                         {items.map((car) => (
                                             <div className="card shadow rounded" key={car.id}>
                                                 <div className="card-image">
+                                                    <Link to={`/account/cars/${car.id}`}>
                                                     <img
                                                         src={`${outer.showImage(car.image, 'thumb')}`}
                                                         alt={car.title}
                                                         loading="lazy"
                                                     />
+                                                    </Link>
                                                 </div>
                                                 <div className="card-body">
                                                     <h2 className="card-title">{car.title}</h2>
@@ -56,7 +59,7 @@ const AccountCarListPage: React.FC = () => {
                                                         <AppIcon onClick={(arg) => handleDelete(Number(arg))} itemId={car.id} icon="trash" />
                                                         <AppIcon to={`/account/cars/edit/${car.id}`} icon="edit" />
                                                     </div>
-                                                    <p className="card-subtitle">{car.brand}</p>
+                                                    <p className="card-subtitle">{car.brand.title}</p>
                                                     <div className="card-details">
                                                         <span className="card-price">${car.price}</span>
                                                         <span className="card-text">{car.travelled} km</span>
@@ -81,7 +84,7 @@ const AccountCarListPage: React.FC = () => {
             >
                 +
             </Link>
-        </>
+        </AccountProtectedLayout>
     );
 };
 

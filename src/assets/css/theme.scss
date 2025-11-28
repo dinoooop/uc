@@ -262,6 +262,8 @@
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: background-color 0.2s, transform 0.2s;
+  text-align: center;
+  padding-top: 25px;
 }
 
 .floating-add-btn:hover {
@@ -934,4 +936,13 @@ footer h3 {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   background-color: $white;
+}
+
+.front {
+  .card-actions {
+    i {
+      float: left;
+      margin-right: .2rem;
+    }
+  }
 }

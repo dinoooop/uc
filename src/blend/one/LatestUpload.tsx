@@ -1,29 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
+import useCarStore from "../../helpers/stores/useCarStore";
+import { outer } from "../../helpers/cssm/outer";
 
 const LatestUpload: React.FC = () => {
+  const { items, index } = useCarStore();
+
   // Dummy content — replace later with API data
-  const cars = [
-    {
-      name: "Honda Civic 2021",
-      brand: "Honda",
-      description:
-        "Meticulously maintained by the owner. Great mileage and smooth driving experience. Perfect for city and highway use.",
-      year: 2021,
-      price: "$18,500",
-      travelled: "25,000 km",
-      image: "/images/default-car.jpg",
-    },
-    {
-      name: "Toyota Corolla 2020",
-      brand: "Toyota",
-      description:
-        "Reliable and fuel-efficient sedan. Regularly serviced with a clean interior. Ideal for daily commuting and long drives.",
-      year: 2020,
-      price: "$16,000",
-      travelled: "30,000 km",
-      image: "/images/default-car.jpg",
-    },
-  ];
+  useEffect(() => {
+    index({ action: 'latest_cars' });
+  }, []);
 
   return (
     <section className="part bg-white">
@@ -32,13 +17,13 @@ const LatestUpload: React.FC = () => {
         <h3 className="part-title-sub mb-4">Browse our extensive collection</h3>
         <div className="rolls">
           {
-            cars.map(car => (
-              <div className="roll">
+            items.map(car => (
+              <div className="roll" key={car.id}>
                 <div className="roll-image">
-                  <img src={car.image} alt={car.name} />
+                  <img src={outer.showImage(car.image)} alt={car.title} />
                 </div>
                 <div className="roll-details">
-                  <h3 className="roll-title">{car.name}</h3>
+                  <h3 className="roll-title">{car.title}</h3>
                   <p className="roll-title-sub">{car.brand}</p>
                   <p className="roll-description">{car.description}</p>
                   <ul className="car-meta">

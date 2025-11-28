@@ -14,6 +14,8 @@ def apply_filters(queryset, params):
     # min max filter
     queryset = apply_min_max('year', queryset, params)
     queryset = apply_min_max('price', queryset, params)
+    queryset = apply_min_max('travelled', queryset, params)
+    queryset = apply_min_max('mileage', queryset, params)
 
     return queryset
 

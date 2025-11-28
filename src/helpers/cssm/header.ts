@@ -4,6 +4,15 @@ export class header {
         return localStorage.getItem("access")
     }
 
+    static regular() {
+        return {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        };
+
+    }
+
     static json() {
         const token = this.getToken();
 

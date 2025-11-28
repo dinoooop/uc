@@ -21,6 +21,13 @@ $directions: (
     }
 }
 
+
+@for $i from 1 through 10 {
+    .p-#{$i} {
+        padding: #{$i}rem;
+    }
+}
+
 @each $short, $full in $directions {
     @for $i from 1 through 10 {
         .p#{$short}-#{$i} {
@@ -66,4 +73,3 @@ $media-query-breakpoints: (
         }
     }
 }
-

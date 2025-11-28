@@ -13,6 +13,12 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(['GET'])
 def car_list(request):
     cars = Car.objects.all() 
+    if request.query_params.get('action') == 'account_car_list' and request.user.is_authenticated:
+        cars = cars.filter(owner=request.user)
+    if request.query_params.get('action') == 'latest_cars':
+        cars = cars.order_by('-id')[:3]
+        serializer = CarSerializer(cars, many=True)
+        return Response(serializer.data)
     cars = apply_filters(cars, request.query_params)
     cars = cars.order_by('-id')
     paginator = CustomPagination()
