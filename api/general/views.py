@@ -1,5 +1,6 @@
 from datetime import datetime
 from cars.models import Car
+from brands.models import Brand
 from core.utils.basic import special_ceil, special_floor
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny

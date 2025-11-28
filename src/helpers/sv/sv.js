@@ -1,15 +1,18 @@
-import { stb } from '../../bootstrap/st/stb';
-import { sva } from './sva'
+// server values support
+export class sva {
 
-// server values
-export class sv {
-  static accounts(param = null) {
-    const data = sva.accounts();
-    return stb.propReturn(param, data);
-  }
+    static localData() {
+        return localStorage.getItem('sv_data') ? JSON.parse(localStorage.getItem('sv_data')) : null;
+    }
 
-  static currency(param = null) {
-    const data = sva.currency();
-    return data;  
-  }
+    static accounts() {
+        const svDataLocal = this.localData()
+        return svDataLocal ? svDataLocal?.accounts : []
+    }
+
+    static currency() {
+        const svDataLocal = this.localData()
+        return svDataLocal ? svDataLocal?.currency : 'USD'
+    }
+
 }

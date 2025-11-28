@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
-import useCarStore from "../../helpers/stores/useCarStore";
-import { outer } from "../../helpers/cssm/outer";
 import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
 import Footer from "../../blend/one/Footer";
 import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
-import { Link } from "react-router-dom";
 import useBrandStore from "../../helpers/stores/useBrandStore";
+import PinCarList from "../../blend/templates/BkpPinCarList";
 
 const FrontCarListPage: React.FC = () => {
-    const { items, index } = useCarStore();
     const { regular, svData } = useGeneralStore()
     const { items: brandItems, index: brandIndex } = useBrandStore();
 
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
 
+    const [indexPayload, setIndexPayload] = useState<Record<string, any>>({});
+
 
     useEffect(() => {
         regular()
+        brandIndex();
     }, [])
 
     useEffect(() => {
@@ -30,8 +30,7 @@ const FrontCarListPage: React.FC = () => {
                 .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
-        index(data);
-        brandIndex();
+        setIndexPayload(data);
     }, [formValues]);
 
     const onChangeForm = (name: string, value: any) => {
@@ -68,36 +67,7 @@ const FrontCarListPage: React.FC = () => {
                             </aside>
                         </div>
                         <div className="col-md-9">
-                            <main className="main-section">
-
-                                {items.length === 0 ? (
-                                    <p className="text-center muted">No cars available.</p>
-                                ) : (
-                                    <div className="card-grid">
-                                        {items.map((car) => (
-                                            <div className="card shadow rounded" key={car.id}>
-                                                <div className="card-image">
-                                                    <Link to={`/cars/${car.id}`}>
-                                                    <img
-                                                        src={`${outer.showImage(car.image, 'thumb')}`}
-                                                        alt={car.title}
-                                                        loading="lazy"
-                                                    />
-                                                    </Link>
-                                                </div>
-                                                <div className="card-body">
-                                                    <h2 className="card-title">{car.title}</h2>
-                                                    <p className="card-subtitle">{car.brand.title}</p>
-                                                    <div className="card-details">
-                                                        <span className="card-price">${car.price}</span>
-                                                        <span className="card-text">{car.travelled} km</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </main>
+                            <PinCarList pinFrom="front" indexPayload={indexPayload} />
                         </div>
                     </div>
                 </div>

@@ -5,8 +5,11 @@ from brands.models import Brand
 
 class CarSerializer(serializers.ModelSerializer):
     brand = BrandSerializer(read_only=True)
-    brand_id = serializers.PrimaryKeyRelatedField(
-        queryset=Brand.objects.all(), source='brand', write_only=True
+    write_brand = serializers.PrimaryKeyRelatedField(
+        queryset=Brand.objects.all(),
+        source='brand',
+        write_only=True,
+        required=False
     )
     class Meta:
         model = Car

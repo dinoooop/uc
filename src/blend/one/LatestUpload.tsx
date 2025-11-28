@@ -24,7 +24,7 @@ const LatestUpload: React.FC = () => {
                 </div>
                 <div className="roll-details">
                   <h3 className="roll-title">{car.title}</h3>
-                  <p className="roll-title-sub">{car.brand}</p>
+                  <p className="roll-title-sub">{car.brand.title}</p>
                   <p className="roll-description">{car.description}</p>
                   <ul className="car-meta">
                     <li><strong>Year:</strong> {car.year}</li>

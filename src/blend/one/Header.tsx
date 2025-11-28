@@ -19,7 +19,9 @@ const Header: React.FC = () => {
   return (
     <header className={`header bg-grey ${isScrolled ? "scrolled" : ""}`}>
       <div className="header-container">
-        <div className="logo">{config.appName}:</div>
+        <div className="logo">
+          <Link to="/">{config.appName}</Link>
+        </div>
         <nav className="nav-links">
           <a href="/">Home</a>
           <a href="/about">About</a>

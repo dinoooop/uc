@@ -9,6 +9,7 @@ import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
 import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 import AppIcon from "../../blend/one/AppIcon";
 import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";
+import PinCarList from "../../blend/templates/BkpPinCarList";
 
 const AccountCarListPage: React.FC = () => {
     const { items, index, remove, destroy } = useCarStore();
@@ -16,7 +17,7 @@ const AccountCarListPage: React.FC = () => {
 
     useEffect(() => {
         regular()
-        index({action: 'account_car_list'});
+        index({ action: 'account_car_list' });
     }, [])
 
     const handleDelete = (id: number) => {
@@ -36,40 +37,7 @@ const AccountCarListPage: React.FC = () => {
 
                         </div>
                         <div className="col-md-9">
-                            <main className="main-section">
-
-                                {items.length === 0 ? (
-                                    <p className="text-center muted">No cars available.</p>
-                                ) : (
-                                    <div className="card-grid">
-                                        {items.map((car) => (
-                                            <div className="card shadow rounded" key={car.id}>
-                                                <div className="card-image">
-                                                    <Link to={`/account/cars/${car.id}`}>
-                                                    <img
-                                                        src={`${outer.showImage(car.image, 'thumb')}`}
-                                                        alt={car.title}
-                                                        loading="lazy"
-                                                    />
-                                                    </Link>
-                                                </div>
-                                                <div className="card-body">
-                                                    <h2 className="card-title">{car.title}</h2>
-                                                    <div className="card-actions">
-                                                        <AppIcon onClick={(arg) => handleDelete(Number(arg))} itemId={car.id} icon="trash" />
-                                                        <AppIcon to={`/account/cars/edit/${car.id}`} icon="edit" />
-                                                    </div>
-                                                    <p className="card-subtitle">{car.brand.title}</p>
-                                                    <div className="card-details">
-                                                        <span className="card-price">${car.price}</span>
-                                                        <span className="card-text">{car.travelled} km</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </main>
+                            <PinCarList pinFrom="account" indexPayload={{ action: 'account_car_list' }} />
                         </div>
                     </div>
                 </div>
