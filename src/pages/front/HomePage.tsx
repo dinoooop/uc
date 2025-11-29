@@ -5,12 +5,11 @@ import Feature from "../../blend/one/Feature";
 import LatestUpload from "../../blend/one/LatestUpload";
 import Testimonial from "../../blend/one/Testimonial";
 import Footer from "../../blend/one/Footer";
-import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import { useSvStore } from "../../helpers/sv/useSvStore";
 
 const HomePage: React.FC = () => {
 
-
-  const { regular } = useGeneralStore()
+  const { regular } = useSvStore();
 
   useEffect(() => {
     regular()

@@ -9,6 +9,7 @@ import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
+import { sv } from "../../helpers/sv/sv";
 
 interface PinCarCreateProps {
   pinFrom?: "account" | "admin" | string;
@@ -16,6 +17,9 @@ interface PinCarCreateProps {
 
 const PinCarCreate: React.FC<PinCarCreateProps> = ({ pinFrom = "account" }) => {
   const { store, loading, serverError } = useCarStore();
+
+  console.log(sv.brands());
+  
 
   const navigate = useNavigate();
   const fieldSet = fomy.refineFieldSet(carFieldSet, "create");
@@ -67,7 +71,7 @@ const PinCarCreate: React.FC<PinCarCreateProps> = ({ pinFrom = "account" }) => {
           <InputField name="title" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
         </div>
         <div className="col-md-6">
-          <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
+          <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sv.brands()} />
         </div>
         <div className="col-md-12">
           <TextArea name="description" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />

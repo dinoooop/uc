@@ -5,6 +5,5 @@ from . import views
 
 
 urlpatterns = [
-    path('contact-submit/', views.contact_submit, name='contact_submit'),
-
+    path('regular/', views.regular, name='regular'),
 ]
