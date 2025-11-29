@@ -13,11 +13,7 @@ const FrontCarListPage: React.FC = () => {
             <MiniBanner page="car_list" />
             <div className="part bg-grey">
                 <div className="wrapper-fluid">
-                    <div className="row">
-                        <div className="col-md-9">
                             <PinCarShow pinFrom="public" />
-                        </div>
-                    </div>
                 </div>
             </div>
             <Footer />

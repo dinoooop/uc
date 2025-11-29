@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import NotFoundPage from "../../pages/front/NotFoundPage";
-import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import { useSvStore } from "../../helpers/sv/useSvStore";
 
 interface AccountProtectedLayoutProps {
     children: ReactNode;
@@ -14,7 +14,7 @@ interface AccountProtectedLayoutProps {
 const AccountProtectedLayout: React.FC<AccountProtectedLayoutProps> = ({ children, statusCode = 200 }) => {
 
     const { user, checkAuth } = useAuthStore()
-    const { svData, regular } = useGeneralStore();
+    const { svData, regular } = useSvStore();
 
     const navigate = useNavigate()
 

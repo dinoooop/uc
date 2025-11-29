@@ -7,7 +7,7 @@ const CarEditPage: React.FC = () => {
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Edit Car</h1>
+                <h1>Edit Car 4</h1>
             </div>
             <div className="row">
                 <div className='cardbody'>

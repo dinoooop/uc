@@ -4,24 +4,22 @@ import Header from "../../blend/one/Header";
 import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
 import Footer from "../../blend/one/Footer";
-import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
 import useBrandStore from "../../helpers/stores/useBrandStore";
 import PinCarList from "../../blend/templates/BkpPinCarList";
+import { useSvStore } from "../../helpers/sv/useSvStore";
+import Checkbox from "../../blend/formc/CheckBox";
+import { sv } from "../../helpers/sv/sv";
 
 const FrontCarListPage: React.FC = () => {
-    const { regular, svData } = useGeneralStore()
-    const { items: brandItems, index: brandIndex } = useBrandStore();
+    const { regular, svData } = useSvStore();
 
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
-
     const [indexPayload, setIndexPayload] = useState<Record<string, any>>({});
-
 
     useEffect(() => {
         regular()
-        brandIndex();
     }, [])
 
     useEffect(() => {
@@ -34,6 +32,11 @@ const FrontCarListPage: React.FC = () => {
     }, [formValues]);
 
     const onChangeForm = (name: string, value: any) => {
+        const instantNewFormValues = { ...formValues, [name]: value };
+        setFormValues(instantNewFormValues);
+      };
+
+    const onChangeRange = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }
         setFormValues(instantNewFormValues)
     }
@@ -52,18 +55,15 @@ const FrontCarListPage: React.FC = () => {
                                 {/* Brand Filter */}
                                 <div className="filter-group">
                                     <h4>Brands</h4>
-                                    {brandItems.map((brand) => (
-                                        <label key={brand.id}>
-                                            <input type="checkbox" /> {brand.title}
-                                        </label>
-                                    ))}
+                                    <Checkbox name="brand" fieldSet={fieldSet} formValues={formValues} onChangeForm={onChangeForm} options={sv.brands()} />
+
                                 </div>
 
                                 {/* Range Filters */}
-                                <RangeFilter name="year" onChangeForm={onChangeForm} label="Year" min={svData.min_year} max={svData.max_year} />
-                                <RangeFilter name="price" onChangeForm={onChangeForm} label="Price ($)" min={svData.min_price} max={svData.max_price} step={1000} />
-                                <RangeFilter name="travelled" onChangeForm={onChangeForm} label="Travelled (km)" min={svData.min_travelled} max={svData.max_travelled} step={1000} />
-                                <RangeFilter name="mileage" onChangeForm={onChangeForm} label="Mileage (km/l)" min={svData.min_mileage} max={100} step={1} />
+                                <RangeFilter name="year" onChangeForm={onChangeRange} label="Year" min={svData.min_year} max={svData.max_year} />
+                                <RangeFilter name="price" onChangeForm={onChangeRange} label="Price ($)" min={svData.min_price} max={svData.max_price} step={1000} />
+                                <RangeFilter name="travelled" onChangeForm={onChangeRange} label="Travelled (km)" min={svData.min_travelled} max={svData.max_travelled} step={1000} />
+                                <RangeFilter name="mileage" onChangeForm={onChangeRange} label="Mileage (km/l)" min={svData.min_mileage} max={100} step={1} />
                             </aside>
                         </div>
                         <div className="col-md-9">

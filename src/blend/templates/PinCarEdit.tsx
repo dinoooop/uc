@@ -9,11 +9,12 @@ import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { fomy } from "../../helpers/cssm/fomy";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
+import { sv } from "../../helpers/sv/sv";
 
 interface PinCarEditProps {
     pinFrom?: string;
 }
-const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "account" }) => {
+const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "admin" }) => {
     const { update, loading, serverError, show, item } = useCarStore();
 
     const navigate = useNavigate();
@@ -23,6 +24,9 @@ const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "account" }) => {
     const [errors, setErrors] = useState<Record<string, string>>({})
     const [formError, setFormError] = useState<string>('');
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'edit'));
+
+    const cancelTo = pinFrom === "account" ? "/account/cars" : "/admin/cars"
+    const submitTo = pinFrom === "account" ? "/account/cars" : "/admin/cars"
 
     const params = useParams();
 
@@ -59,7 +63,7 @@ const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "account" }) => {
             try {
                 await update(submitData)
                 if (!serverError && !loading) {
-                    navigate('/account/cars')
+                    navigate(submitTo)
                 }
             } catch (error) {
                 console.error(error)
@@ -76,7 +80,7 @@ const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "account" }) => {
                     <InputField name="title" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
                 </div>
                 <div className="col-md-6">
-                    <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sta.brands} />
+                    <Select name="brand" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} options={sv.brands()} />
                 </div>
                 <div className="col-md-12">
                     <TextArea name="description" fieldSet={fieldSet} formValues={formValues} errors={errors} onChangeForm={onChangeForm} />
@@ -97,7 +101,7 @@ const PinCarEdit: React.FC<PinCarEditProps> = ({ pinFrom = "account" }) => {
             {serverError && <p className="error-text">{serverError}</p>}
             {formError && <p className="error-text">{formError}</p>}
 
-            <Submit cto="/account/cars" loading={loading} />
+            <Submit cto={cancelTo} loading={loading} />
         </form>
     );
 };

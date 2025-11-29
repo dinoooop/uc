@@ -7,7 +7,7 @@ export interface Car {
     price: number; // done
     travelled: number;
     mileage: number;
-    owner: number;
+    owner: { id: number; first_name: string; email: string, phone?: string };
     image: string;
     created_at: string;
     updated_at: string;

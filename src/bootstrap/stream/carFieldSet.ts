@@ -18,10 +18,11 @@ export const carFieldSet = {
         editRule: 'sometimes|required|string',
     },
     brand: {
-        forms: 'create|edit',
+        forms: 'create|edit|index',
         dummyValue: 1,
         createRule: 'required|number',
         editRule: 'sometimes|required|number',
+        indexRule: 'sometimes|required|number',
     },
     year: {
         label: 'Model Year',
@@ -55,8 +56,8 @@ export const carFieldSet = {
     image: {
         label: 'Thumbnail',
         forms: 'create|edit',
-        createRule: 'file|image|maxsize:8',
-        editRule: 'file|image|maxsize:8',
+        createRule: 'file|aurl|image|maxsize:8',
+        editRule: 'file|aurl|image|maxsize:8',
     },
     image_crop: {
         forms: 'create|edit',

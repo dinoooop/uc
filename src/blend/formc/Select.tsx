@@ -35,7 +35,13 @@ const Select: React.FC<SelectFieldProps> = ({
   const newId = fieldSet[name].id;
   const newLabel = fieldSet[name].label;
 
-  const value = formValues[name] ?? "";
+  let value = formValues[name] ?? "";
+
+  // Handle case where value is an object (e.g., from a select component)
+  if (value && value.id) {
+    onChangeForm(name, value.id);
+  }
+
   const error = errors[name] ?? "";
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {

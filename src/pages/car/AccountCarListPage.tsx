@@ -2,18 +2,16 @@ import React, { useEffect } from "react";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
 import useCarStore from "../../helpers/stores/useCarStore";
-import { outer } from "../../helpers/cssm/outer";
 import { Link } from "react-router-dom";
 import Footer from "../../blend/one/Footer";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
-import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
-import AppIcon from "../../blend/one/AppIcon";
 import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";
 import PinCarList from "../../blend/templates/BkpPinCarList";
+import { useSvStore } from "../../helpers/sv/useSvStore";
 
 const AccountCarListPage: React.FC = () => {
     const { items, index, remove, destroy } = useCarStore();
-    const { regular } = useGeneralStore()
+    const { regular } = useSvStore()
 
     useEffect(() => {
         regular()

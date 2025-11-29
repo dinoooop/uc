@@ -10,6 +10,11 @@ def apply_filters(queryset, params):
             Q(name__icontains=search_query) |
             Q(brand__icontains=search_query)
         )
+        
+    # BRAND FILTER (supports brand[]=2&brand[]=3)
+    brand_ids = params.getlist('brand[]', [])
+    if brand_ids:
+        queryset = queryset.filter(brand_id__in=brand_ids)
 
     # min max filter
     queryset = apply_min_max('year', queryset, params)

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import SideNav from "../one/SideNav";
 import ProfilePic from "../one/ProfilePic";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
-import { useGeneralStore } from "../../helpers/stores/useGeneralStore";
+import { useSvStore } from "../../helpers/sv/useSvStore";
 
 interface DashboardLayoutProps {
     children: ReactNode;
@@ -16,7 +16,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = ({ children }) => {
     const [viewSidenav, setViewSideNav] = useState<boolean>(false);
     const themeIcon = "sample";
     const { user, checkAuth } = useAuthStore()
-    const { svData, regular } = useGeneralStore();
+    const { svData, regular } = useSvStore();
 
     const navigate = useNavigate()
 

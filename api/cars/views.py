@@ -43,11 +43,16 @@ def car_show(request, pk):
 def car_store(request):
     data = request.data.copy()
     data["owner"] = request.user.id 
+    print(request.user.id )
     data["image"] = img_save_crop(request, 'image')
     if data["image"]:
         img_resize(data["image"], "car_image")
+
+    if 'brand' in data and not data.get('brand_id') and not data.get('write_brand'):
+        data['brand_id'] = data.get('brand')
+
         
-    serializer = CarSerializer(data=data)
+    serializer = CarSerializer(data=data, context={'request': request})
     if serializer.is_valid():
         serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -69,6 +74,9 @@ def car_update(request, pk):
     data["image"] = img_save_crop(request, 'image')
     if data["image"]:
         img_resize(data["image"], "car_image")
+
+    if 'brand' in data and not data.get('brand_id') and not data.get('write_brand'):
+        data['brand_id'] = data.get('brand')
         
     partial = request.method == 'PATCH'
     serializer = CarSerializer(car, data=data, partial=partial)
