@@ -9,7 +9,7 @@ interface SvStoreProps {
     regular: () => Promise<void>;
 }
 
-export const useSvStore = create<SvStoreProps>((set, get) => ({
+export const useSvStore = create<SvStoreProps>((set) => ({
     svData: svDataLocal,
     regular: async () => {
         try {

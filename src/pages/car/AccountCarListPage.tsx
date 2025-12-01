@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import MiniBanner from "../../blend/one/MiniBanner";
 import Header from "../../blend/one/Header";
-import useCarStore from "../../helpers/stores/useCarStore";
 import { Link } from "react-router-dom";
 import Footer from "../../blend/one/Footer";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
@@ -10,18 +9,11 @@ import PinCarList from "../../blend/templates/PinCarList";
 import { useSvStore } from "../../helpers/sv/useSvStore";
 
 const AccountCarListPage: React.FC = () => {
-    const { items, index, remove, destroy } = useCarStore();
     const { regular } = useSvStore()
 
     useEffect(() => {
         regular()
-        index({ action: 'account_car_list' });
     }, [])
-
-    const handleDelete = (id: number) => {
-        remove(id);
-        destroy(id);
-    }
 
     return (
         <AccountProtectedLayout>
@@ -32,16 +24,12 @@ const AccountCarListPage: React.FC = () => {
                     <div className="row">
                         <div className="col-md-3">
                             <AccountQuickLinks />
-
                         </div>
                         <div className="col-md-9">
                             <PinCarList pinFrom="account" indexPayload={{ action: 'account_car_list' }} />
                         </div>
                     </div>
                 </div>
-
-
-
             </div>
             <Footer />
             <Link to="/account/cars/create"

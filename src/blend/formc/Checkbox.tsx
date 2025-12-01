@@ -1,6 +1,4 @@
 import React from "react";
-import { fm } from "./fm";
-
 
 export interface OptionItem {
     label: string;

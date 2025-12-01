@@ -1,5 +1,4 @@
 import React from "react";
-import DashboardLayout from "../../blend/layouts/DashboardLayout";
 import PinCarShow from "../../blend/templates/PinCarShow";
 import Header from "../../blend/one/Header";
 import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";

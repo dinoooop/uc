@@ -4,7 +4,6 @@ import useCarStore from "../../helpers/stores/useCarStore";
 import InputField from "../../blend/formc/InputField";
 import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
-import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { fomy } from "../../helpers/cssm/fomy";
