@@ -17,7 +17,7 @@ def regular(request):
         'min_year': 1987,
         'max_year': datetime.now().year,
         'min_price': 0,
-        'max_price': special_ceil(Car.objects.all().order_by('-price').first().price) * 10,
+        'max_price': special_ceil(Car.objects.all().order_by('-price').first().price),
         'min_travelled': special_floor(Car.objects.all().order_by('travelled').first().travelled),
         'max_travelled': special_ceil(Car.objects.all().order_by('-travelled').first().travelled),
         'min_mileage': 0,

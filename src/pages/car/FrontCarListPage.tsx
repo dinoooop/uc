@@ -5,15 +5,13 @@ import RangeFilter from "../../blend/formc/RangeFilter";
 import { fomy } from "../../helpers/cssm/fomy";
 import Footer from "../../blend/one/Footer";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
-import useBrandStore from "../../helpers/stores/useBrandStore";
-import PinCarList from "../../blend/templates/BkpPinCarList";
+import PinCarList from "../../blend/templates/PinCarList";
 import { useSvStore } from "../../helpers/sv/useSvStore";
-import Checkbox from "../../blend/formc/CheckBox";
+import Checkbox from "../../blend/formc/Checkbox";
 import { sv } from "../../helpers/sv/sv";
 
 const FrontCarListPage: React.FC = () => {
     const { regular, svData } = useSvStore();
-
     const fieldSet = fomy.refineFieldSet(carFieldSet, 'index')
     const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'index'));
     const [indexPayload, setIndexPayload] = useState<Record<string, any>>({});
@@ -34,7 +32,7 @@ const FrontCarListPage: React.FC = () => {
     const onChangeForm = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value };
         setFormValues(instantNewFormValues);
-      };
+    };
 
     const onChangeRange = (name: string, value: any) => {
         const instantNewFormValues = { ...formValues, [name]: value }
@@ -51,14 +49,11 @@ const FrontCarListPage: React.FC = () => {
                         <div className="col-md-3">
                             <aside className="sidebar">
                                 <h3>Filters</h3>
-
                                 {/* Brand Filter */}
                                 <div className="filter-group">
                                     <h4>Brands</h4>
                                     <Checkbox name="brand" fieldSet={fieldSet} formValues={formValues} onChangeForm={onChangeForm} options={sv.brands()} />
-
                                 </div>
-
                                 {/* Range Filters */}
                                 <RangeFilter name="year" onChangeForm={onChangeRange} label="Year" min={svData.min_year} max={svData.max_year} />
                                 <RangeFilter name="price" onChangeForm={onChangeRange} label="Price ($)" min={svData.min_price} max={svData.max_price} step={1000} />

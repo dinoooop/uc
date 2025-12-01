@@ -5,7 +5,6 @@ import InputField from "../../blend/formc/InputField";
 import TextArea from "../../blend/formc/TextArea";
 import Select from "../../blend/formc/Select";
 import { fomy } from "../../helpers/cssm/fomy";
-import sta from "../../bootstrap/st/sta";
 import InputCropFile from "../../blend/formc/InputCropFile";
 import Submit from "../../blend/one/Submit";
 import { carFieldSet } from "../../bootstrap/stream/carFieldSet";
@@ -19,8 +18,6 @@ const PinCarCreate: React.FC<PinCarCreateProps> = ({ pinFrom = "account" }) => {
   const { store, loading, serverError } = useCarStore();
 
   console.log(sv.brands());
-  
-
   const navigate = useNavigate();
   const fieldSet = fomy.refineFieldSet(carFieldSet, "create");
   const rules = fomy.getFormRules(fieldSet, "create");
@@ -92,7 +89,6 @@ const PinCarCreate: React.FC<PinCarCreateProps> = ({ pinFrom = "account" }) => {
 
       {serverError && <p className="error-text">{serverError}</p>}
       {formError && <p className="error-text">{formError}</p>}
-ok
       <Submit cto={pinFrom === "admin" ? "/admin/cars" : "/account/cars"} loading={loading} />
     </form>
   );

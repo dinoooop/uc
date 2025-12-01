@@ -33,7 +33,7 @@ const PinCarShow: React.FC<PinCarShowProps> = ({ pinFrom = "public" }) => {
                             />
                         </div>
 
-                        <div className="col-md-4 ">
+                        <div className="col-md-8 ">
                             <h2 className="name">{item.title}</h2>
                             <h3>{item.brand.title}</h3>
                             <h4>{item.year}</h4>
@@ -50,13 +50,16 @@ const PinCarShow: React.FC<PinCarShowProps> = ({ pinFrom = "public" }) => {
                                 )
                             }
 
-                        </div>
-                        {/* Owner details */}
-                        <div className="col-md-4 ">
-                            <h3 className="mb-2">Owner Details</h3>
+                            <h3 className="mt-2 mb-0">Owner Details</h3>
                             <h4>Name: {item.owner.first_name}</h4>
                             <h4>Email: {item.owner.email}</h4>
                             <h4>Phone: {item.owner.phone}</h4>
+
+                            {/* back button */}
+                            <div className="mt-3">
+                                <Link to={pinFrom === "account" ? "/account/cars" : pinFrom === "admin" ? "/admin/cars" : "/cars"} className="btn btn-secondary">Back</Link>    
+                            </div>
+
                         </div>
                     </div>
                 )

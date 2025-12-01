@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Footer from "../../blend/one/Footer";
 import AccountQuickLinks from "../../blend/one/AccountQuickLinks";
 import AccountProtectedLayout from "../../blend/layouts/AccountProtectedLayout";
-import PinCarList from "../../blend/templates/BkpPinCarList";
+import PinCarList from "../../blend/templates/PinCarList";
 import { useSvStore } from "../../helpers/sv/useSvStore";
 
 const AccountCarListPage: React.FC = () => {
