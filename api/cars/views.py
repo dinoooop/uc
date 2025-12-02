@@ -1,5 +1,7 @@
+import os
+from uc_collection import settings
 from cars.filters import apply_filters
-from core.utils.image_curve import img_resize, img_save_crop
+from core.utils.image_curve import img_resize, img_save_crop, delete_image_variants
 from rest_framework.decorators import api_view, parser_classes, permission_classes
 from rest_framework.response import Response
 from rest_framework import status
@@ -74,6 +76,10 @@ def car_update(request, pk):
     data["image"] = img_save_crop(request, 'image')
     if data["image"]:
         img_resize(data["image"], "car_image")
+        # Delete old image
+        if car.image:
+            delete_image_variants(car.image)
+
 
     if 'brand' in data and not data.get('brand_id') and not data.get('write_brand'):
         data['brand_id'] = data.get('brand')
@@ -95,6 +101,10 @@ def car_delete(request, pk):
         car = Car.objects.get(pk=pk)
     except Car.DoesNotExist:
         return Response({'error': 'Car not found'}, status=status.HTTP_404_NOT_FOUND)
+    
+    # Delete associated image variants
+    if car.image:
+        delete_image_variants(car.image)
 
     car.delete()
     return Response({'message': 'Car deleted successfully'}, status=status.HTTP_204_NO_CONTENT)

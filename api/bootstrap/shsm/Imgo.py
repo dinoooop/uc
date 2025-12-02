@@ -1,3 +1,6 @@
+import os
+
+
 proportional_measurements = {
     "default": {
         "width": 50,
@@ -39,6 +42,7 @@ class Imgo:
         else:
             raise ValueError("Provide either width or height (not both).")
 
+    
 
 # Equivalent to `imgCrops` in TS
 img_crops = {

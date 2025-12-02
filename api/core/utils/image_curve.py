@@ -115,3 +115,14 @@ def img_resize(filename, type):
             print(f"Created resized image: {new_filename}")
 
     return True
+
+
+def delete_image_variants(file_name):
+        """Delete image variants from storage"""
+        
+        base_path = os.path.join(settings.MEDIA_ROOT, 'uploads')
+        variants = ['', 'thumb-', 'cover-']
+        for variant in variants:
+            variant_path = base_path + f"/{variant}{file_name}"
+            if os.path.exists(variant_path):
+                os.remove(variant_path)

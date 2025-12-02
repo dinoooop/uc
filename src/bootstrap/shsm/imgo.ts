@@ -52,6 +52,8 @@ class imgo {
             throw new Error("Provide either width or height (not both).");
         }
     }
+
+    
 }
 
 export const imgCrops: {
