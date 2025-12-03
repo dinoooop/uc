@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
+import { sv } from "../../helpers/sv/sv";
 
 
 interface PinCarShowProps {
@@ -25,42 +26,41 @@ const PinCarShow: React.FC<PinCarShowProps> = ({ pinFrom = "public" }) => {
             {
                 item && (
                     <div className="row ">
-                        <div className="col-md-4">
-                            <img
-                                src={`${outer.showImage(item.image, 'cover')}`}
-                                alt={item.title}
-                                loading="lazy"
-                            />
-                        </div>
-
-                        <div className="col-md-8 ">
-                            <h2 className="name">{item.title}</h2>
-                            <h3>{item.brand.title}</h3>
-                            <h4>{item.year}</h4>
-                            <h4>{item.price} Rs</h4>
-                            <h4>Travelled: {item.travelled} Km</h4>
-                            <h4>{item.mileage} Kmpl</h4>
-                            <h3 className="mb-2">About</h3>
-                            <p className="about">{item.description}</p>
+                        <div className="rolls">
                             {
-                                (pinFrom === "account" || pinFrom === "admin") && (
-                                    <div className="mt-1">
-                                        <Link to={`/admin/cars/edit/${item.id}`} className="btn">Edit</Link>
+                                <div className="roll">
+                                    <div className="roll-image">
+                                        <img
+                                            src={`${outer.showImage(item.image, 'cover')}`}
+                                            alt={item.title}
+                                            loading="lazy"
+                                        />
                                     </div>
-                                )
+                                    <div className="roll-details">
+                                        <h3 className="roll-title">{item.title}</h3>
+                                        <p className="roll-title-sub">{item.brand.title}</p>
+                                        <p className="roll-description">{item.description}</p>
+                                        <ul className="car-meta">
+                                            <li><strong>Year: </strong>{item.year}</li>
+                                            <li><strong>Price: </strong>{sv.currency()} {item.price}</li>
+                                            <li><strong>Mileage: </strong>{item.mileage} Kmpl</li>
+                                            <li><strong>Travelled: </strong>{item.travelled}</li>
+                                            <li><strong>Owner Details</strong></li>
+                                            <li><strong>Name: </strong>{item.owner.first_name}</li>
+                                            <li><strong>Email: </strong>{item.owner.email}</li>
+                                            <li><strong>Phone: </strong>{item.owner.phone}</li>
+                                            <li>
+                                                <div className="mt-3">
+                                                 <Link to={pinFrom === "account" ? "/account/cars" : pinFrom === "admin" ? "/admin/cars" : "/cars"} className="btn btn-secondary">Back</Link>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
                             }
-
-                            <h3 className="mt-2 mb-0">Owner Details</h3>
-                            <h4>Name: {item.owner.first_name}</h4>
-                            <h4>Email: {item.owner.email}</h4>
-                            <h4>Phone: {item.owner.phone}</h4>
-
-                            {/* back button */}
-                            <div className="mt-3">
-                                <Link to={pinFrom === "account" ? "/account/cars" : pinFrom === "admin" ? "/admin/cars" : "/cars"} className="btn btn-secondary">Back</Link>    
-                            </div>
-
                         </div>
+
+
                     </div>
                 )
             }

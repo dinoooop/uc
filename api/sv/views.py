@@ -14,14 +14,15 @@ def regular(request):
     brands_list =[ {"label": b.title, "value": b.id} for b in brands]
 
     data = {
-        'min_year': 1987,
-        'max_year': datetime.now().year,
-        'min_price': 0,
-        'max_price': special_ceil(Car.objects.all().order_by('-price').first().price),
-        'min_travelled': special_floor(Car.objects.all().order_by('travelled').first().travelled),
-        'max_travelled': special_ceil(Car.objects.all().order_by('-travelled').first().travelled),
-        'min_mileage': 0,
-        'max_mileage': 100,
+        'year_min': 1987,
+        'year_max': datetime.now().year,
+        'price_min': 0,
+        'price_max': Car.objects.all().order_by('-price').first().price,
+        'travelled_min': special_floor(Car.objects.all().order_by('travelled').first().travelled),
+        'travelled_max': special_ceil(Car.objects.all().order_by('-travelled').first().travelled),
+        'mileage_min': 0,
+        'mileage_max': 100,
         'brands': brands_list,
+        'currency': 'Rs.',
     }
     return Response(data)

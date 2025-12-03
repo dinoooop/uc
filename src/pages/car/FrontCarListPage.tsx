@@ -21,11 +21,27 @@ const FrontCarListPage: React.FC = () => {
     }, [])
 
     useEffect(() => {
+        // set formValues from svData
+        setFormValues(prev => ({
+            ...prev,
+            year_min: svData.year_min,
+            year_max: svData.year_max,
+            price_min: svData.price_min,
+            price_max: svData.price_max,
+            travelled_min: svData.travelled_min,
+            travelled_max: svData.travelled_max,
+            mileage_min: svData.mileage_min,
+            mileage_max: svData.mileage_max,
+        }));
+    }, [svData])
+
+    useEffect(() => {
         const data = Object.fromEntries(
             Object.entries(formValues)
                 .filter(([_, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
+        data.action = 'front_car_list';
         setIndexPayload(data);
     }, [formValues]);
 
@@ -51,14 +67,13 @@ const FrontCarListPage: React.FC = () => {
                                 <h3>Filters</h3>
                                 {/* Brand Filter */}
                                 <div className="filter-group">
-                                    <h4>Brands</h4>
                                     <Checkbox name="brand" fieldSet={fieldSet} formValues={formValues} onChangeForm={onChangeForm} options={sv.brands()} />
                                 </div>
                                 {/* Range Filters */}
-                                <RangeFilter name="year" onChangeForm={onChangeRange} label="Year" min={svData.min_year} max={svData.max_year} />
-                                <RangeFilter name="price" onChangeForm={onChangeRange} label="Price ($)" min={svData.min_price} max={svData.max_price} step={1000} />
-                                <RangeFilter name="travelled" onChangeForm={onChangeRange} label="Travelled (km)" min={svData.min_travelled} max={svData.max_travelled} step={1000} />
-                                <RangeFilter name="mileage" onChangeForm={onChangeRange} label="Mileage (km/l)" min={svData.min_mileage} max={100} step={1} />
+                                <RangeFilter name="year" onChangeForm={onChangeRange} label="Year" min={svData.year_min} max={svData.year_max} />
+                                <RangeFilter name="price" onChangeForm={onChangeRange} label="Price" min={svData.price_min} max={svData.price_max} step={1000} />
+                                <RangeFilter name="travelled" onChangeForm={onChangeRange} label="Travelled (km)" min={svData.travelled_min} max={svData.travelled_max} step={1000} />
+                                <RangeFilter name="mileage" onChangeForm={onChangeRange} label="Mileage (km/l)" min={svData.mileage_min} max={svData.mileage_max} step={1} />
                             </aside>
                         </div>
                         <div className="col-md-9">

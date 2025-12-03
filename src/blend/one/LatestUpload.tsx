@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
+import { Link } from "react-router-dom";
+import { sv } from "../../helpers/sv/sv";
 
 const LatestUpload: React.FC = () => {
   const { items, index } = useCarStore();
@@ -20,16 +22,18 @@ const LatestUpload: React.FC = () => {
             items.map(car => (
               <div className="roll" key={car.id}>
                 <div className="roll-image">
-                  <img src={outer.showImage(car.image)} alt={car.title} />
+                  <Link to={`/cars/${car.id}`}>
+                    <img src={outer.showImage(car.image, 'cover')} alt={car.title} />
+                  </Link>
                 </div>
                 <div className="roll-details">
                   <h3 className="roll-title">{car.title}</h3>
                   <p className="roll-title-sub">{car.brand.title}</p>
                   <p className="roll-description">{car.description}</p>
                   <ul className="car-meta">
-                    <li><strong>Year:</strong> {car.year}</li>
-                    <li><strong>Price:</strong> {car.price}</li>
-                    <li><strong>Travelled:</strong> {car.travelled}</li>
+                    <li><strong>Year: </strong>{car.year}</li>
+                    <li><strong>Price: </strong>{sv.currency()} {car.price}</li>
+                    <li><strong>Travelled: </strong>{car.travelled}</li>
                   </ul>
                 </div>
               </div>

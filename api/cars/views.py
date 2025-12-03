@@ -73,8 +73,10 @@ def car_update(request, pk):
         return Response({'error': 'Car not found'}, status=status.HTTP_404_NOT_FOUND)
 
     data = request.data.copy()
-    data["image"] = img_save_crop(request, 'image')
-    if data["image"]:
+    
+    image_file = request.FILES.get('image')
+    if image_file:
+        data["image"] = img_save_crop(request, 'image')
         img_resize(data["image"], "car_image")
         # Delete old image
         if car.image:

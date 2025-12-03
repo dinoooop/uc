@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import useCarStore from "../../helpers/stores/useCarStore";
 import { outer } from "../../helpers/cssm/outer";
 import AppIcon from "../one/AppIcon";
+import { sv } from "../../helpers/sv/sv";
 
 interface PinCarListProps {
   /**
@@ -79,7 +80,7 @@ const PinCarList: React.FC<PinCarListProps> = ({ pinFrom = "front", indexPayload
 
                   <p className="card-subtitle">{car.brand?.title}</p>
                   <div className="card-details">
-                    <span className="card-price">${car.price}</span>
+                    <span className="card-price">{sv.currency()} {car.price}</span>
                     <span className="card-text">{car.travelled} km</span>
                   </div>
                 </div>

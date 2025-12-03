@@ -6,7 +6,7 @@ export const carFieldSet = {
     title: {
         description: 'Write a catchy title',
         forms: 'create|edit',
-        dummyValue: 'i10 for sale',
+        dummyValue: 'xxx',
         createRule: 'required|string',
         editRule: 'sometimes|required|string',
     },
@@ -19,7 +19,7 @@ export const carFieldSet = {
     },
     brand: {
         forms: 'create|edit|index',
-        dummyValue: 1,
+        dummyValue: 3,
         createRule: 'required|number',
         editRule: 'sometimes|required|number',
         indexRule: 'sometimes|required|number',
@@ -27,28 +27,28 @@ export const carFieldSet = {
     year: {
         label: 'Model Year',
         forms: 'create|edit',
-        dummyValue: 2024,
+        dummyValue: 2015,
         createRule: 'number',
         createValue: 2025,
         editRule: 'number',
     },
     price: {
         forms: 'create|edit',
-        dummyValue: 15000,
+        dummyValue: 550000,
         createRule: 'number',
         editRule: 'number',
     },
     travelled: {
         label: 'Travelled distance (Km)',
         forms: 'create|edit',
-        dummyValue: 5000,
+        dummyValue: 200000,
         createRule: 'number',
         editRule: 'number',
     },
     mileage: {
         label: 'Mileage (Km/ltr)',
         forms: 'create|edit',
-        dummyValue: 50,
+        dummyValue: 12,
         createRule: 'number',
         createValue: 10,
         editRule: 'number',
@@ -66,12 +66,37 @@ export const carFieldSet = {
     price_min: {
         forms: 'index',
         indexRule: 'number',
-        indexValue: 100,
+        indexValue: 0,
     },
     price_max: {
         forms: 'index',
         indexRule: 'number',
-        indexValue: 100000,
+        indexValue: 2000000,
+
+    },
+    year_min: {
+        forms: 'index',
+        indexRule: 'number',
+    },
+    year_max: {
+        forms: 'index',
+        indexRule: 'number',
+    },
+    travelled_min: {
+        forms: 'index',
+        indexRule: 'number',
+    },
+    travelled_max: {
+        forms: 'index',
+        indexRule: 'number',
+    },
+    mileage_min: {
+        forms: 'index',
+        indexRule: 'number',
+    },
+    mileage_max: {
+        forms: 'index',
+        indexRule: 'number',
     },
     // Index fields
     search: {

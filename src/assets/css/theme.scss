@@ -396,13 +396,14 @@
   gap: 2rem;
 }
 
-.roll-image img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 10px;
-  object-fit: cover;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+.roll-image {
+  img {
+    width: 30rem;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
 }
 
 .roll-details {
@@ -921,18 +922,21 @@ footer h3 {
   img {
     width: 100%;
   }
+
   h2.name {
     font-size: 3rem;
   }
+
   h2 {
     font-size: 2rem;
   }
+
   h3 {
     color: $black;
     font-size: 2rem;
   }
 
-  .about{
+  .about {
     margin-bottom: 2rem;
   }
 }

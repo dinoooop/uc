@@ -52,16 +52,27 @@ const useCarStore = create<CarsState>((set, get) => ({
     index: async (params = {}) => {
         try {
             get().resetBeforeRequest()
-            const response = await axios.get(`${config.api}/cars/`, {
-                params,
-                headers: header.json().headers,
-            });
-            
+
+
             if (params.action === 'latest_cars') {
+                const response = await axios.get(`${config.api}/cars/`, {
+                    params
+                });
                 set({
                     items: response.data || [],
                 });
+            } else if (params.action === 'front_car_list') {
+                const response = await axios.get(`${config.api}/cars/`, {
+                    params
+                });
+                set({
+                    items: response.data.results || [],
+                });
             } else {
+                const response = await axios.get(`${config.api}/cars/`, {
+                    params,
+                    headers: header.json().headers,
+                });
                 set({
                     items: response.data.results || [],
                     perPage: response.data.per_page,
