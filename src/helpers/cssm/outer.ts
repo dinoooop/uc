@@ -112,7 +112,7 @@ export class outer {
   }
 
   static showImage(
-    img: string | null,
+    img: string | null | undefined,
     type?: string | null,
   ): string {
     if (img && type == 'original') return `${config.server}/media/uploads/${img}`;

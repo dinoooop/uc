@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
+import { outer } from "../../helpers/cssm/outer";
 
 const ProfilePic: React.FC = () => {
 
     const navigate = useNavigate();
-    const { logout } = useAuthStore()
+    const { logout, user } = useAuthStore()
 
     const [view, setView] = useState(false);
     const picRef = useRef<HTMLImageElement | null>(null);
@@ -44,11 +45,11 @@ const ProfilePic: React.FC = () => {
         <div className="dropdown-item" style={{ position: "relative" }}>
             <div onClick={onClickToggler}>
                 <img
-                    ref={picRef}
-                    src="/images/avatar.png"
-                    className="profile-pic"
-                    alt="Profile"
-                />
+                                                                    src={`${outer.showImage(user?.avatar, 'cover')}`}
+                                                                    alt={user?.full_name}
+                                                                    loading="lazy"
+                                                                    className="profile-pic"
+                                                                />
             </div>
 
             {view && (

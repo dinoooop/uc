@@ -20,7 +20,7 @@ const AccountCarShowPage: React.FC = () => {
 
                         </div>
                         <div className="col-md-9">
-                            <PinCarShow />
+                            <PinCarShow pinFrom="account" />
                         </div>
                     </div>
                 </div>

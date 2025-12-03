@@ -4,7 +4,7 @@ const config = {
     server: import.meta.env.VITE_SERVER,
     images: `${import.meta.env.VITE_CLIENT}/images`,
     api: `${import.meta.env.VITE_SERVER}/api`,
-    valuesType: "dummy",
+    valuesType: import.meta.env.VITE_APP_DATA,
 };
 
 export default config;

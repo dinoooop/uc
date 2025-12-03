@@ -261,7 +261,7 @@
   height: 56px;
   border-radius: 50%;
   border: none;
-  background-color: $color-4;
+  background-color: $color-2;
   color: $white;
   font-size: 32px;
   line-height: 0;
@@ -956,3 +956,7 @@ footer h3 {
     }
   }
 }
+
+.error-text {
+        color: $danger;
+    }

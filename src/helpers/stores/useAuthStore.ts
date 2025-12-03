@@ -7,6 +7,7 @@ interface User {
     full_name: string;
     email: string;
     is_staff: boolean;
+    avatar: string;
 }
 
 interface AuthState {
