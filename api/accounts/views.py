@@ -51,7 +51,7 @@ def register(request):
             'id': user.id,
             'full_name': user.first_name,
             'email': user.email,
-            'avatar': user.profile.avatar
+            'avatar': user.profile.avatar if hasattr(user, 'profile') else None
         },
         'tokens': tokens
     }, status=status.HTTP_201_CREATED)
@@ -78,8 +78,7 @@ def login(request):
             'full_name': user.first_name,
             'email': user.email,
             'is_staff': user.is_staff,
-            'avatar': user.profile.avatar
-
+            'avatar': user.profile.avatar if hasattr(user, 'profile') else None
         },
         'tokens': tokens
     }, status=status.HTTP_200_OK)

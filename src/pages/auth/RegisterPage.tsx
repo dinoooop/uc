@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../helpers/stores/useAuthStore";
 import { fomy } from "../../helpers/cssm/fomy";
 import InputField from "../../blend/formc/InputField";
@@ -12,6 +12,7 @@ const RegisterPage: React.FC = () => {
   const { register, loading, serverError } = useAuthStore();
   const fieldSet = fomy.refineFieldSet(authFieldSet, 'register')
   const rules = fomy.getFormRules(fieldSet, 'register')
+  const navigate = useNavigate();
 
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [formValues, setFormValues] = useState(fomy.getFormValuesOrDummy(fieldSet, 'register'));
@@ -33,6 +34,8 @@ const RegisterPage: React.FC = () => {
       const submitData = fomy.prepareSubmit(formValues)
       try {
         await register(submitData)
+        navigate("/account/cars/create");
+
       } catch (error) {
         console.error(error)
       }
